@@ -55,3 +55,6 @@
       src: proxy_service
       dest: "/lib/systemd/system/kubectlproxy.service"
 
+  - name: Start the proxy service demon
+    command: systemctl enable kubectlproxy.service
+
