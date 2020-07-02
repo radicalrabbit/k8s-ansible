@@ -52,8 +52,8 @@
 
   - name: Create service for kubectl proxy
     template:
-      src: proxy_service
-      dest: "/lib/systemd/system/kubectlproxy.service"
+       src: proxy_service
+       dest: "/lib/systemd/system/kubectlproxy.service"
 
     name: Enable the proxy service demon
     command: systemctl enable kubectlproxy.service
