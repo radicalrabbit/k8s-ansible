@@ -29,7 +29,7 @@
 
   - name: Create the cluster role binding
     command: kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
-	
+
   - name: Install the k8s Dashboard add-on
     command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
     args:
@@ -55,7 +55,7 @@
       src: proxy_service
       dest: "/lib/systemd/system/kubectlproxy.service"
 
-  - name: Enable the proxy service demon
+    name: Enable the proxy service demon
     command: systemctl enable kubectlproxy.service
 
   - name: Reload the systemctl demon
