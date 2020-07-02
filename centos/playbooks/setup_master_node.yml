@@ -1,0 +1,29 @@
+---
+- hosts: k8s-master-nodes
+  become: yes
+  vars_files:
+  - env_variables
+  tasks:
+  - name: Pulling k8s images for cluster setup
+    shell: kubeadm config images pull
+
+  - name: Reset kubeadm
+    shell: kubeadm reset -f
+    register: output
+
+  - name: Init of k8s cluster
+    shell: kubeadm init --apiserver-advertise-address {{ad_addr}} --pod-network-cidr={{cidr_v}}
+    register: output
+
+  - name: Storing Logs and the security token for later
+    local_action: copy content={{ output.stdout }} dest={{ token_file }}
+    sudo: False 
+
+  - name: Copying the required config files
+    shell: |
+     mkdir -p $HOME/.kube
+     sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+     sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: Installing Flannel Pod Network
+    command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml

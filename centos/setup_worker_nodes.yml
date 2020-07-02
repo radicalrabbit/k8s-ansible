@@ -1,0 +1,4 @@
+---
+- import_playbook: playbook/preconditions.yml
+- import_playbook: playbook/setup_nodes.yml
+- import_playbook: playbook/setup_worker_node.yml
