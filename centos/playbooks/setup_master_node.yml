@@ -49,3 +49,9 @@
     shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
     register: token_result
   - debug: var=token_result.stdout_lines
+
+  - name: Create service for kubectl proxy
+    template:
+      src: playbooks/proxy_service
+      dest: "/lib/systemd/system/kubectlproxy.service"
+
