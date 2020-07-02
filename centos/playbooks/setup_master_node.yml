@@ -47,6 +47,5 @@
 
   - name: Get the service account token
     shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
-       register: token_result
-    debug:
-       var: token_result.output
+    register: token_result
+  - debug: var: token_result.output
