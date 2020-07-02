@@ -57,8 +57,10 @@
 
   - name: Enable the proxy service demon
     command: systemctl enable kubectlproxy.service
+
   - name: Reload the systemctl demon
     command: systemctl daemon-reload
+
   - name: Restart the proxy service demon
     command: systemctl restart kubectlproxy.service
 
