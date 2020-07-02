@@ -46,8 +46,7 @@
     command: kubectl create clusterrolebinding dashboard-admin -n default \ --clusterrole=cluster-admin \ --serviceaccount=default:dashboard
 
   - name: Get the service account token
-    shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
-    register: token_result
-
-  - debug:
-      var: token_result.output
+     - shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+       register: token_result
+     - debug:
+       var: token_result.output
