@@ -52,6 +52,6 @@
 
   - name: Create service for kubectl proxy
     template:
-      src: playbooks/proxy_service
+      src: proxy_service
       dest: "/lib/systemd/system/kubectlproxy.service"
 
