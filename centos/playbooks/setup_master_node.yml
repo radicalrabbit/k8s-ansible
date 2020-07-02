@@ -1,5 +1,5 @@
 ---
-- hosts: k8s-master-nodes
+- hosts: k8s-master
   become: yes
   vars_files:
   - env_variables
@@ -17,7 +17,6 @@
 
   - name: Storing Logs and the security token for later
     local_action: copy content={{ output.stdout }} dest={{ token_file }}
-    sudo: False 
 
   - name: Copying the required config files
     shell: |

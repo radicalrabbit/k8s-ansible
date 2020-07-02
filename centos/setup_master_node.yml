@@ -1,4 +1,4 @@
 ---
-- import_playbook: playbook/preconditions.yml
-- import_playbook: playbook/setup_nodes.yml
-- import_playbook: playbook/setup_master_node.yml
+- import_playbook: playbooks/preconditions.yml
+- import_playbook: playbooks/setup_nodes.yml
+- import_playbook: playbooks/setup_master_node.yml
