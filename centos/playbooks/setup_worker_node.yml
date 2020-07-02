@@ -1,5 +1,5 @@
 ---
-- hosts: k8s-worker-nodes
+- hosts: kubernetes-worker-nodes
   become: yes
   vars_files:
   - env_variables
