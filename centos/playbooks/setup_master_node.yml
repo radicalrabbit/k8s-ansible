@@ -64,4 +64,3 @@
   - name: Restart the proxy service demon
     command: systemctl restart kubectlproxy.service
 
-
