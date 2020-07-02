@@ -34,7 +34,7 @@
     command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
     args:
        warn: false # set warn=false to prevent warning
-       ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
+    ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
 
   - name: Create the dashboard admin cluster role binding
     command: kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa
