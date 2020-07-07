@@ -11,33 +11,33 @@
       metadata:
         name: nexus
         namespace: dev-tools
-    spec:
-      selector:
-        matchLabels:
-          app: nexus
-      replicas: 1
-      template:
-        metadata:
-          labels:
+      spec:
+        selector:
+          matchLabels:
             app: nexus
-          name: nexus
-    spec:
-      containers:
-        - name: nexus
-          image: sonatype/nexus3:latest
-          resources:
-            limits:
-              memory: "4Gi"
-              cpu: "1000m"
-            requests:
-              memory: "2Gi"
-              cpu: "500m"
-          ports:
-            - containerPort: 8081
-          volumeMounts:
-            - name: nexus-pv-volume
-              mountPath: /var/nexus/data
-      volumes:
-        - name: "nexus-pv-volume"
-          persistentVolumeClaim:
-            claimName: nexus-pv-claim
+        replicas: 1
+        template:
+          metadata:
+            labels:
+              app: nexus
+            name: nexus
+          spec:
+            containers:
+              - name: nexus
+                image: sonatype/nexus3:latest
+                resources:
+                  limits:
+                    memory: "4Gi"
+                    cpu: "1000m"
+                  requests:
+                    memory: "2Gi"
+                    cpu: "500m"
+                ports:
+                  - containerPort: 8081
+                volumeMounts:
+                  - name: nexus-pv-volume
+                    mountPath: /var/nexus/data
+            volumes:
+              - name: "nexus-pv-volume"
+                persistentVolumeClaim:
+                  claimName: nexus-pv-claim
