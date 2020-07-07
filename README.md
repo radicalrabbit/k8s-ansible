@@ -1,12 +1,15 @@
 # Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
 
 ## Prerequisites
+The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please execute the following commands inside a terminal console of your system:
 ```
-$ sudo apt update
-$ sudo apt install software-properties-common
+$ sudo apt update && sudo apt upgrade -y
+$ sudo apt install software-properties-common -y
 $ sudo apt-add-repository --yes --update ppa:ansible/ansible
-$ sudo apt install ansible
+$ sudo apt install ansible -y
+$ ansible --version
 ```
+After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
 
 ## Install the k8s master node
 TBD
@@ -14,9 +17,10 @@ TBD
 ## Install the k8s slave node(s)
 TBD
 
-# Setup the Kubernetes Cluster by using Ansible (CentOS 8)
+# Setup the Kubernetes Cluster with Ansible (CentOS 8)
+
 ## Prerequisites
-The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a console of your system (Note: Some of the subsequent commands must be confirmed using the "y" key):
+The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a terminal console of your system (Note: Some of the subsequent commands must be confirmed using the "y" key):
 
 ```
 $ sudo dnf makecache
@@ -25,6 +29,7 @@ $ sudo dnf makecache
 $ sudo dnf install ansible
 $ ansible --version
 ```
+After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
 
 ## Install the k8s master node
 After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
