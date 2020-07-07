@@ -27,10 +27,17 @@ kubectl get nodes
 TBD
 
 ## Kubernetes Dashboard
-The installation of the K8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml).
-
+The installation of the k8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml). Check the following address to see if the dashboad web application is up and running:
+```
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+```
+The login procedure requires the admin security token of your k8s cluster. Either copy the token of your k8s setup from the command line output (k8s master node setup) or execute the subsequent command in a console window of ypur master node:
+```
+kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+```
 
 # Sources and References:
 * https://devopscube.com/setup-nexus-kubernetes/
 * https://github.com/ctienshi/kubernetes-ansible
+* https://www.edureka.co/blog/install-kubernetes-on-ubuntu
 
