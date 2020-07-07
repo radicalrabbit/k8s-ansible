@@ -4,13 +4,13 @@
   vars_files:
   - env_variables
   tasks:
-  - name: Create a Service object from an inline definition
+  - name: Create a Nexus app
     k8s:
       apiVersion: extensions/v1beta1
       kind: Deployment
       metadata:
         name: nexus
-        namespace: tools
+        namespace: dev-tools
     spec:
       selector:
         matchLabels:
