@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: jira
+  name: jira
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jira
+  template:
+    metadata:
+      labels:
+        app: jira
+      name: jira
+    spec:
+      containers:
+        - name: jira
+          image: "atlassian/jira-software"
+          resources:
+            requests:
+              cpu: "1"
+              memory: "2G"
+          volumeMounts:
+            - name: "jira-pv-volume"
+              mountPath: /var/atlassian/application-data/jira
+      volumes:
+        - name: "jira-pv-volume"
+          persistentVolumeClaim:
+            claimName: jira-pv-claim

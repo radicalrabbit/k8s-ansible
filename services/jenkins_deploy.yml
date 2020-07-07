@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: jenkins
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: jenkins
+    spec:
+      securityContext:
+        fsGroup: 99
+      containers:
+        - name: jenkins
+          image: jenkins/jenkins:latest
+          resources:
+            requests:
+              memory: "2G"
+          volumeMounts:
+            - name: jenkins-pv-volume
+              mountPath: /var/jenkins_home
+          ports:
+            - containerPort: 8080
+            - containerPort: 50000
+      volumes:
+      - name: jenkins-pv-volume
+        persistentVolumeClaim:
+          claimName: jenkins-pv-claim

@@ -2,3 +2,4 @@
 - import_playbook: playbooks/preconditions.yml
 - import_playbook: playbooks/setup_nodes.yml
 - import_playbook: playbooks/setup_master_node.yml
+- import_playbook: ../services/dashboard.yml

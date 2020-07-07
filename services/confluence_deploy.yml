@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: confluence
+  name: confluence
+spec:
+  selector:
+    matchLabels:
+      app: confluence
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: confluence
+      name: confluence
+    spec:
+      containers:
+        - name: confluence
+          image: "atlassian/confluence-server"
+          resources:
+            requests:
+              memory: "2G"
+          volumeMounts:
+            - name: "confluence-pv-volume"
+              mountPath: /var/atlassian/application-data/confluence
+      volumes:
+        - name: "confluence-pv-volume"
+          persistentVolumeClaim:
+            claimName: confluence-pv-claim

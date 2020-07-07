@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: bitbucket
+  name: bitbucket
+spec:
+  selector:
+    matchLabels:
+      app: bitbucket
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: bitbucket
+      name: bitbucket
+    spec:
+      containers:
+        - name: bitbucket
+          image: "atlassian/bitbucket-server"
+          resources:
+            requests:
+              memory: "2G"
+          volumeMounts:
+            - name: "bitbucket-pv-volume"
+              mountPath: /var/atlassian/application-data/bitbucket
+      volumes:
+        - name: "bitbucket-pv-volume"
+          persistentVolumeClaim:
+            claimName: bitbucket-pv-claim

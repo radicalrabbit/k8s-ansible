@@ -27,24 +27,6 @@
   - name: Installing Flannel Pod Network
     command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 
-  - name: Create the cluster role binding
-    command: kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
-
-  - name: Install the k8s Dashboard add-on
-    command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml
-    args:
-       warn: false # set warn=false to prevent warning
-    ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
-
-  - name: Create the dashboard admin cluster role binding
-    command: kubectl create clusterrolebinding dashboard-admin-sa --clusterrole=cluster-admin --serviceaccount=default:dashboard-admin-sa
-
-  - name: Create a cluster admin service account
-    command: kubectl create serviceaccount dashboard -n default
-
-  - name: Add the cluster binding rules to your dashboard account
-    command: kubectl create clusterrolebinding dashboard-admin -n default \ --clusterrole=cluster-admin \ --serviceaccount=default:dashboard
-
   - name: Get the service account token
     shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
     register: token_result

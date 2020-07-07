@@ -1,0 +1,41 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  vars_files:
+  - env_variables
+  tasks:
+  - name: Create the Nexus namespace
+    command: kubectl create namespace nexus
+
+  - name: Create a Service object from an inline definition
+    k8s:
+      apiVersion: extensions/v1beta1
+      kind: Deployment
+      metadata:
+        name: nexus
+        namespace: tools
+    spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nexus-server
+    spec:
+      containers:
+        - name: nexus
+          image: sonatype/nexus3:latest
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "1000m"
+            requests:
+              memory: "2Gi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8081
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /nexus-data
+      volumes:
+        - name: nexus-data
+          emptyDir: {}
