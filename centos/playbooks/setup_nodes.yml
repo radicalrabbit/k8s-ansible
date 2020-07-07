@@ -42,7 +42,7 @@
      enabled: yes
     with_items: "{{ services }}"
 
-  - name: Allow ports om firewall demon
+  - name: Allow ports in firewall demon
     firewalld:
      port: "{{ item }}"
      state: enabled
