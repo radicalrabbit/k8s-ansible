@@ -6,7 +6,7 @@ TBD
 ```
 git config --global credential.helper store
 git pull
-'''
+```
 * Create one or multiple server nodes (CentOS and Ubuntu supported), e.g. one master and arbitrary slave-/worker-nodes (e.g. KVM,VirtualBox).
 * Change the “ad_addr” in the env_variables file with the IP address of the Kubernetes master node.
 * Add the IPs of the master and slave nodes in the according "hosts" file.
