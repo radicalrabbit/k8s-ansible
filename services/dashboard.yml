@@ -1,8 +1,6 @@
 ---
 - hosts: kubernetes-master-nodes
   become: yes
-  vars_files:
-  - env_variables
   tasks:
   - name: Create the cluster role binding
     command: kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
