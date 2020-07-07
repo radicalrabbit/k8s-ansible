@@ -1,11 +1,22 @@
 # Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
 
 ## Prerequisites
+```
+$ sudo apt update
+$ sudo apt install software-properties-common
+$ sudo apt-add-repository --yes --update ppa:ansible/ansible
+$ sudo apt install ansible
+```
+
+## Install the k8s master node
+TBD
+
+## Install the k8s slave node(s)
 TBD
 
 # Setup the Kubernetes Cluster by using Ansible (CentOS 8)
 ## Prerequisites
-The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a console of your system (Note: Several commands must be confirmed using the "y" key):
+The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a console of your system (Note: Some of the subsequent commands must be confirmed using the "y" key):
 
 ```
 $ sudo dnf makecache
@@ -16,7 +27,7 @@ $ ansible --version
 ```
 
 ## Install the k8s master node
-After installing Ansible you can start to work with the installatiob scripts provided in the Git reporitory:
+After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
 
 * Clone the according GitHub repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
 ```
@@ -30,11 +41,13 @@ $ git pull
 ```
 $ ansible-playbook setup_master_node.yml --ask-pass
 ```
-* After the master node setup has finished, run the subsequent command to set up the k8s slave nodes.
+
+## Install the k8s slave node(s)
+After the master node setup has finished, run the subsequent command to set up the k8s slave node(s).
 ```
 $ ansible-playbook setup_worker_nodes.yml --ask-pass
 ```
-* Once the workers have joined the cluster, run the following command to check the status of the worker nodes.
+Once the nodes have joined the cluster, run the following command to check the status of the respective slave nodes.
 ```
 $ kubectl get nodes
 ```
@@ -51,8 +64,26 @@ The login procedure requires the admin security token of your k8s cluster. Eithe
 ```
 $ kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
 ```
+## Atlassian Jira
+TBD
+
+## Atlassian Confluence
+TBD
+
+## Atlassian Bitbucket
+TBD
+
+## Jenkins CI Build Server
+TBD
+
+## Nexus Artifact Management
+TBD
+
+## GitLab
+TBD
 
 # Sources and References:
+* https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
 * https://devopscube.com/setup-nexus-kubernetes/
 * https://github.com/ctienshi/kubernetes-ansible
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
