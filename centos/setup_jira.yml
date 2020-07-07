@@ -1,20 +1,9 @@
----
-- hosts: kubernetes-master-nodes
-  become: yes
-  vars_files:
-  - env_variables
-  tasks:
-  - name: Create the Nexus namespace
-    command: kubectl create namespace nexus
-
-  - name: Create a Service object from an inline definition
-    k8s:
-      apiVersion: extensions/v1beta1
-      kind: Deployment
-      metadata:
-        name: nexus
-        namespace: tools
-    spec:
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: nexus
+  namespace: devops-tools
+spec:
   replicas: 1
   template:
     metadata:
@@ -39,3 +28,4 @@
       volumes:
         - name: nexus-data
           emptyDir: {}
+

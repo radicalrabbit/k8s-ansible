@@ -46,3 +46,5 @@
   - name: Restart the proxy service demon
     command: systemctl restart kubectlproxy.service
 
+  - name: Create a namespace for the development tools
+    command: kubectl create namespace dev-tools

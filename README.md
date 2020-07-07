@@ -66,21 +66,39 @@ $ kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secre
 ```
 ## Atlassian Jira
 TBD
+```
+$
+```
 
 ## Atlassian Confluence
 TBD
+```
+$
+```
 
 ## Atlassian Bitbucket
 TBD
+```
+$
+```
 
 ## Jenkins CI Build Server
 TBD
+```
+$
+```
 
 ## Nexus Artifact Management
 TBD
+```
+$
+```
 
 ## GitLab
-TBD
+I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created a installation routine for a GitLab service inside the k8s cluster.
+```
+$
+```
 
 # Sources and References:
 * https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
