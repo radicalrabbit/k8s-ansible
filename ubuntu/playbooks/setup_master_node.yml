@@ -1,0 +1,50 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  vars_files:
+  - env_variables
+  tasks:
+  - name: Pulling k8s images for cluster setup
+    shell: kubeadm config images pull
+
+  - name: Reset kubeadm
+    shell: kubeadm reset -f
+    register: output
+
+  - name: Init of k8s cluster
+    shell: kubeadm init --apiserver-advertise-address {{ad_addr}} --pod-network-cidr={{cidr_v}}
+    register: output
+
+  - name: Storing Logs and the security token for later
+    local_action: copy content={{ output.stdout }} dest={{ token_file }}
+
+  - name: Copying the required config files
+    shell: |
+     mkdir -p $HOME/.kube
+     sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+     sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: Installing Flannel Pod Network
+    command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+  - name: Get the service account token
+    shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+    register: token_result
+  - debug: var=token_result.stdout_lines
+
+  - name: Create service for kubectl proxy
+    template:
+       src: proxy_service
+       dest: "/lib/systemd/system/kubectlproxy.service"
+
+  - name: Enable the proxy service demon
+    command: systemctl enable kubectlproxy.service
+
+  - name: Reload the systemctl demon
+    command: systemctl daemon-reload
+
+  - name: Restart the proxy service demon
+    command: systemctl restart kubectlproxy.service
+
+  - name: Create a namespace for the development tools
+    command: kubectl create namespace dev-tools

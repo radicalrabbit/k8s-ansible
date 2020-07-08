@@ -17,7 +17,7 @@ After update and installation procedure have successfully completed the last of 
 
 Beyond the software modules listed above the Ansible scripts also require a running SSH server demon on the target system. Check if a running SSH server is available on your system by executing the subsequent command:
 ```
-systemctl status sshd
+$ systemctl status sshd
 ```
 If you should get any other information that "active (running)" you will probably need to install and activate the SSH demon:
 ```
@@ -146,4 +146,6 @@ $
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
 * https://linuxconfig.org/install-ssh-server-on-redhat-8
 * https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
+* https://phoenixnap.com/kb/install-kubernetes-on-ubuntu
+* https://www.digitalocean.com/community/tutorials/so-installieren-und-verwenden-sie-docker-auf-ubuntu-18-04-de
 

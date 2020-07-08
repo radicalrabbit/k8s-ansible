@@ -1,0 +1,55 @@
+---
+- hosts: all
+  become: yes
+  vars_files:
+  - env_variables
+  tasks:
+  - name: Add the k8s repo signing key
+    command: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
+
+  - name: Perform an update of the package lists
+    command: sudo apt-get update
+
+  - name: Install curl
+    command: sudo apt-get install curl -y
+  
+  - name: Add the k8s repository
+    command: sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+
+  - name: Install the required k8s packages
+    command: sudo apt-get install kubeadm kubelet kubectl -y
+
+  - name: Mark the packes as hold
+    command: sudo apt-mark hold kubeadm kubelet kubectl
+
+  - name: Install https connection dependencies
+    command: sudo apt install apt-transport-https ca-certificates curl software-properties-common  -y
+
+  - name: Add the repo key for the Docker installation
+    command:  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+  - name: Add the Docker repository
+    command: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" && sudo apt update -y
+
+  - name: Select the Docker-CE repo for installation
+    command: apt-cache policy docker-ce
+
+  - name: Install Docker-CE
+    command: sudo apt-get install docker-ce && sudo systemctl status docker -y
+
+  - name: Add the user to the Docker group
+    command: sudo usermod -aG docker ${USER} && su - ${USER}
+    
+  - name: 
+    command: sudo apt-get install firewalld -y && sudo systemctl enable firewalld -y && sudo systemctl start firewalld -y && sudo ufw disable  
+
+  - name: Allow ports in firewall demon
+    firewalld:
+     port: "{{ item }}"
+     state: enabled
+     permanent: yes
+     immediate: yes
+    with_items: "{{ ports }}"
+
+  - name: Enabling firewall bridge rule
+    shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"

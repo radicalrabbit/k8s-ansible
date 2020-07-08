@@ -1,0 +1,13 @@
+[Unit]
+Description=kubectl proxy 8001
+After=network.target
+
+[Service]
+User=root
+ExecStart=/bin/bash -c "/usr/bin/kubectl proxy --address=127.0.0.1 --port=8001"
+StartLimitInterval=0
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
