@@ -1,0 +1,23 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a PV for the Nexus App
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: PersistentVolume
+        metadata:
+          name: nexus-pv-volume
+        labels:
+          type: local
+        spec:
+          storageClassName: manual
+          capacity:
+            storage: 30Gi
+          accessModes:
+            - ReadWriteOnce
+          hostPath:
+            path: "/var/nexus"
+

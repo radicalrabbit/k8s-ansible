@@ -145,4 +145,5 @@ $
 * https://github.com/ctienshi/kubernetes-ansible
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
 * https://linuxconfig.org/install-ssh-server-on-redhat-8
+* https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
 

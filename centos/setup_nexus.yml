@@ -1,3 +1,4 @@
+- import_playbook: ../tools/nexus_pv.yml
 - import_playbook: ../tools/nexus_pvc.yml
 - import_playbook: ../tools/nexus_deploy.yml
 - import_playbook: ../tools/nexus_service.yml

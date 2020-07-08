@@ -2,7 +2,7 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-  - name: Create a Nexus app
+  - name: Create a Nexus service
     k8s:
       state: present
       definition:
