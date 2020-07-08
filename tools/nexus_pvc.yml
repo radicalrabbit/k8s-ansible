@@ -10,6 +10,7 @@
         kind: PersistentVolumeClaim
         metadata:
           name: nexus-pv-claim
+          namespace: dev-tools
         spec:
           storageClassName: manual
           accessModes:
