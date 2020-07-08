@@ -5,9 +5,13 @@ The installation artifacts provided in this repository require an installation o
 ```
 $ sudo apt update && sudo apt upgrade -y
 $ sudo apt install software-properties-common -y
+$ sudo dnf install python3
+$ sudo apt install python3-pip
+$ pip install openshift pyyaml kubernetes
 $ sudo apt-add-repository --yes --update ppa:ansible/ansible
 $ sudo apt install ansible -y
 $ ansible --version
+$ pip3 --version
 ```
 After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
 
@@ -26,8 +30,11 @@ The installation artifacts provided in this repository require an installation o
 $ sudo dnf makecache
 $ sudo dnf install epel-release
 $ sudo dnf makecache
+$ sudo dnf install python3
+$ pip install openshift pyyaml kubernetes
 $ sudo dnf install ansible
 $ ansible --version
+$ pip3 --version
 ```
 After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
 

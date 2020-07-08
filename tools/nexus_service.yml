@@ -1,5 +1,5 @@
 ---
-- hosts: kubernetes-slave-nodes
+- hosts: kubernetes-master-nodes
   become: yes
   tasks:
   - name: Create a Nexus app
@@ -15,7 +15,7 @@
           prometheus.io/port:   '8081'
       spec:
         selector: 
-          app: nexus-server
+          app: nexus
         type: NodePort  
       ports:
       - port: 8081

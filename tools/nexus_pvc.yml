@@ -1,5 +1,5 @@
 ---
-- hosts: kubernetes-slave-nodes
+- hosts: kubernetes-master-nodes
   become: yes
   tasks:
   - name: Create a PVC for the Nexus App
