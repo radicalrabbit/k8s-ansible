@@ -15,6 +15,18 @@ $ pip3 --version
 ```
 After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
 
+Beyond the software modules listed above the Ansible scripts also require a running SSH server demon on the target system. Check if a running SSH server is available on your system by executing the subsequent command:
+```
+systemctl status sshd
+```
+If you should get any other information that "active (running)" you will probably need to install and activate the SSH demon:
+```
+$ sudo apt-get install openssh-server
+$ sudo apt-get install openssh-client
+$ sudo systemctl status ssh
+$ sudo ufw allow ssh
+$ systemctl status sshd
+```
 ## Install the k8s master node
 TBD
 
@@ -27,41 +39,56 @@ TBD
 The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a terminal console of your system (Note: Some of the subsequent commands must be confirmed using the "y" key):
 
 ```
-$ sudo dnf makecache
-$ sudo dnf install epel-release
-$ sudo dnf makecache
-$ sudo dnf install python3
-$ pip install openshift pyyaml kubernetes
-$ sudo dnf install ansible
-$ ansible --version
-$ pip3 --version
+# sudo dnf makecache
+# sudo dnf install epel-release
+# sudo dnf makecache
+# sudo dnf install python3
+# pip install openshift pyyaml kubernetes
+# sudo dnf install ansible
+# ansible --version
+# pip3 --version
 ```
 After update and installation procedure have successfully completed the last of the commands above should deliver a command prompt similar to "ansible 2.9.*".
+
+Beyond the software modules listed above the Ansible scripts also require a running SSH server demon on the target system. Check if a running SSH server is available on your system by executing the subsequent command:
+```
+systemctl status sshd
+```
+If you should get any other information that "active (running)" you will probably need to install and activate the SSH demon:
+```
+# dnf install openssh-server
+# systemctl start sshd
+# systemctl enable sshd
+# systemctl status sshd
+# firewall-cmd --zone=public --permanent --add-service=ssh
+# firewall-cmd --reload
+# systemctl reload sshd
+```
 
 ## Install the k8s master node
 After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
 
 * Clone the according GitHub repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
 ```
-$ git config --global credential.helper store
-$ git pull
+# git config --global credential.helper store
+# git pull
 ```
 * Create one or multiple server nodes (CentOS and Ubuntu supported), e.g. one master and arbitrary slave-/worker-nodes (e.g. KVM,VirtualBox).
 * Change the “ad_addr” in the env_variables file with the IP address of the Kubernetes master node.
 * Add the IPs of the master and slave nodes in the according "hosts" file.
 * Run the subsequent following commands to setup Kubernetes nodes and services.
 ```
-$ ansible-playbook setup_master_node.yml --ask-pass
+# ansible-playbook setup_master_node.yml --ask-pass
 ```
 
 ## Install the k8s slave node(s)
 After the master node setup has finished, run the subsequent command to set up the k8s slave node(s).
 ```
-$ ansible-playbook setup_worker_nodes.yml --ask-pass
+# ansible-playbook setup_worker_nodes.yml --ask-pass
 ```
 Once the nodes have joined the cluster, run the following command to check the status of the respective slave nodes.
 ```
-$ kubectl get nodes
+# kubectl get nodes
 ```
 
 # Setup additional Kubernetes services using Ansible
@@ -117,4 +144,5 @@ $
 * https://devopscube.com/setup-nexus-kubernetes/
 * https://github.com/ctienshi/kubernetes-ansible
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
+* https://linuxconfig.org/install-ssh-server-on-redhat-8
 
