@@ -4,38 +4,40 @@
   tasks:
   - name: Create a Nexus app
     k8s:
-      apiVersion: apps/v1
-      kind: Deployment
-      metadata:
-        name: nexus
-        namespace: dev-tools
-      spec:
-        selector:
-          matchLabels:
-            app: nexus
-        replicas: 1
-        template:
-          metadata:
-            labels:
+      state: present
+      definition:
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: nexus
+          namespace: dev-tools
+        spec:
+          selector:
+            matchLabels:
               app: nexus
-            name: nexus
-          spec:
-            containers:
-              - name: nexus
-                image: sonatype/nexus3:latest
-                resources:
-                  limits:
-                    memory: "4Gi"
-                    cpu: "1000m"
-                  requests:
-                    memory: "2Gi"
-                    cpu: "500m"
-                ports:
-                  - containerPort: 8081
-                volumeMounts:
-                  - name: nexus-pv-volume
-                    mountPath: /var/nexus/data
-            volumes:
-              - name: "nexus-pv-volume"
-                persistentVolumeClaim:
-                  claimName: nexus-pv-claim
+          replicas: 1
+          template:
+            metadata:
+              labels:
+                app: nexus
+              name: nexus
+            spec:
+              containers:
+                - name: nexus
+                  image: sonatype/nexus3:latest
+                  resources:
+                    limits:
+                      memory: "4Gi"
+                      cpu: "1000m"
+                    requests:
+                      memory: "2Gi"
+                      cpu: "500m"
+                  ports:
+                    - containerPort: 8081
+                  volumeMounts:
+                    - name: nexus-pv-volume
+                      mountPath: /var/nexus/data
+              volumes:
+                - name: "nexus-pv-volume"
+                  persistentVolumeClaim:
+                    claimName: nexus-pv-claim
