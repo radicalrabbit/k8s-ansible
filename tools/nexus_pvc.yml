@@ -15,6 +15,6 @@
           storageClassName: manual
           accessModes:
             - ReadWriteOnce
-        resources:
-          requests:
-            storage: 30Gi
+          resources:
+            requests:
+              storage: 30Gi
