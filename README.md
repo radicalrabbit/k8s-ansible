@@ -1,3 +1,11 @@
+# Getting started
+
+* Clone the repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
+* Create multiple servers (e.g. Centos). One master and 1-n workers. 
+* Provide the 'ad_addr' in the env_variables file by setting the IP address of the Kubernetes 
+* Add the IP Addresses of the worker nodes and the master node in the 'hosts' file.
+* Proceed with the steps described below according to your OS (e.g. CentOS).
+
 # Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
 
 ## Prerequisites
