@@ -1,4 +1,27 @@
-# Getting started
+# Installing Vagrant
+TBD
+```
+$ vagrant plugin install vagrant-libvirt
+```
+
+# Brief Vagrant Cheatsheet:
+
+Get a list of all local Vagrant boxes:
+```
+$ vagrant global-status
+```
+
+Remove all local Vagrant boxes:
+```
+$ vagrant box list | cut -f 1 -d ' ' | xargs -L 1 vagrant box remove -f
+```
+
+Clear the local lost of Vagrant boxes:
+```
+$ vagrant global-status --prune
+```
+
+# Configuring the Host Addressesn
 
 * Clone the repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
 * Create multiple servers (e.g. Centos). One master and 1-n workers. 
@@ -13,9 +36,9 @@ The installation artifacts provided in this repository require an installation o
 ```
 $ sudo apt update && sudo apt upgrade -y
 $ sudo apt install software-properties-common -y
-$ sudo dnf install python3
+$ sudo apt install python3
 $ sudo apt install python3-pip
-$ pip install openshift pyyaml kubernetes
+$ pip3 install openshift pyyaml kubernetes
 $ sudo apt-add-repository --yes --update ppa:ansible/ansible
 $ sudo apt install ansible -y
 $ ansible --version
@@ -51,7 +74,7 @@ The installation artifacts provided in this repository require an installation o
 # sudo dnf install epel-release
 # sudo dnf makecache
 # sudo dnf install python3
-# pip install openshift pyyaml kubernetes
+# pip3 install openshift pyyaml kubernetes
 # sudo dnf install ansible
 # ansible --version
 # pip3 --version
@@ -145,6 +168,17 @@ $
 I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created a installation routine for a GitLab service inside the k8s cluster.
 ```
 $
+```
+
+## K8s Cheatsheet
+TBD
+```
+$ kubectl get nodes
+```
+
+TBD
+```
+$ kubectl get pods --all-namespaces
 ```
 
 # Sources and References:
