@@ -29,11 +29,15 @@
      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
      yum install docker-ce -y --nobest
 
-  - name: Install Python3 and pip3 packages
+  - name: Install Python3
     shell: |
      yum install -y python3
-     pip3 install -y kubernetes
-     pip3 install -y openshift  
+   
+  - pip:
+      name: openshift
+
+  - pip:
+      name: kubernetes
 
   - name: Installing required packages
     yum:

@@ -86,13 +86,13 @@ After installing Ansible you can start to work with the installatiob scripts pro
 * Add the IPs of the master and slave nodes in the according "hosts" file.
 * Run the subsequent following commands to setup Kubernetes nodes and services.
 ```
-# ansible-playbook setup_master_node.yml --ask-pass
+# sudo ansible-playbook setup_master_node.yml
 ```
 
 ## Install the k8s slave node(s)
 After the master node setup has finished, run the subsequent command to set up the k8s slave node(s).
 ```
-# ansible-playbook setup_worker_nodes.yml --ask-pass
+# sudo ansible-playbook setup_worker_nodes.yml
 ```
 Once the nodes have joined the cluster, run the following command to check the status of the respective slave nodes.
 ```
