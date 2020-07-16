@@ -1,4 +1,4 @@
-ad_addr: 192.168.122.7
+ad_addr: 10.11.12.2
 cidr_v: 172.16.0.0/16
 
 packages:

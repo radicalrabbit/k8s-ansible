@@ -5,15 +5,15 @@ VAGRANTFILE_API_VERSION = "2"
 CLUSTER_RANGE = "10.11.12"
 CLUSTER_RANGE_START = 2
 NUMBER_OF_MEMBERS = 3
-OS_DISTRO = "generic"
-OS_VERSION = "centos8"
+OS_DISTRO = "centos"
+OS_VERSION = "8"
 MEMBER_HOSTNAME_PREFIX = "#{OS_DISTRO}#{OS_VERSION}"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "#{OS_DISTRO}/#{OS_VERSION}"
 
-config.vm.provider "kvm" do |v|
-  v.memory = 2048
+config.vm.provider "libvirt" do |v|
+  v.memory = 4096
   v.cpus = 2
 end
 
@@ -24,6 +24,9 @@ end
           server.vm.hostname = vm_name
           server.vm.network "private_network", ip: "#{ip_address}"
           server.vm.provision "shell", path: "scripts/script.sh", args: "#{ip_address}"
+          server.vm.network "forwarded_port", guest: 8001, host: 8001
+          server.vm.network "forwarded_port", guest: 8080, host: 8080
+          server.vm.network "forwarded_port", guest: 80, host: 80
         end
       end
 end
