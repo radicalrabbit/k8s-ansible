@@ -1,27 +1,44 @@
 # Installing Vagrant
 TBD
 ```
-$ vagrant plugin install vagrant-libvirt
+$ sudo vagrant plugin install vagrant-libvirt
 ```
 
 # Brief Vagrant Cheatsheet:
 
 Get a list of all local Vagrant boxes:
 ```
-$ vagrant global-status
+$ sudo vagrant global-status
 ```
 
 Remove all local Vagrant boxes:
 ```
-$ vagrant box list | cut -f 1 -d ' ' | xargs -L 1 vagrant box remove -f
+$ sudo vagrant box list | cut -f 1 -d ' ' | xargs -L 1 vagrant box remove -f
 ```
 
 Clear the local lost of Vagrant boxes:
 ```
-$ vagrant global-status --prune
+$ sudo vagrant global-status --prune
 ```
 
-# Configuring the Host Addressesn
+# Creating the Vagrant Boxes
+TBD
+```
+$ sudo vagrant global-status --prune
+```
+
+# Installation order
+TBD
+
+- vagrant vm boxes
+- install master
+- install workers
+- install dashboard
+- install nexus
+- TBD
+
+
+# Configuring the Host Addresses
 
 * Clone the repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
 * Create multiple servers (e.g. Centos). One master and 1-n workers. 

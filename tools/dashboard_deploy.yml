@@ -19,4 +19,3 @@
 
   - name: Add the cluster binding rules to your dashboard account
     command: kubectl create clusterrolebinding dashboard-admin -n default \ --clusterrole=cluster-admin \ --serviceaccount=default:dashboard
-

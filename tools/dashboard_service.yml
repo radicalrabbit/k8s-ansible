@@ -2,17 +2,17 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-  - name: Create external NodePort for Dashboard
+  - name: Create a NodePort service for the Dashboard
     k8s:
       state: present
       definition:
-        apiVersion: v1
         kind: Service
+        apiVersion: v1
         metadata:
           labels:
             k8s-app: kubernetes-dashboard
           name: kubernetes-dashboard
-          namespace: default
+          namespace: kubernetes-dashboard
         spec:
           ports:
             - port: 443
