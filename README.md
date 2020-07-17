@@ -1,42 +1,24 @@
 # Installing Vagrant
-TBD
+The Kubernetes node VMs in this project are created by using Vagrant box images. First of all please install Vagrant before proceeding with the next steps:
+
+CentOS:
 ```
+# sudo dnf -y install https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.rpm
+# vagrant --version
+# sudo vagrant plugin install vagrant-libvirt
+```
+
+Debian/Ubuntu:
+```
+$ curl -O https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb
+$ sudo apt install ./vagrant_2.2.9_x86_64.deb
+$ vagrant --version
 $ sudo vagrant plugin install vagrant-libvirt
 ```
 
-# Brief Vagrant Cheatsheet:
+The virtual machines for the K8s cluster can also be installed manually. Nevertheless Vagrant is the perfect choice to create lightweight VMs in less time by using a reproducible installation process (see https://www.vagrantup.com/).
 
-Get a list of all local Vagrant boxes:
-```
-$ sudo vagrant global-status
-```
-
-Remove all local Vagrant boxes:
-```
-$ sudo vagrant box list | cut -f 1 -d ' ' | xargs -L 1 vagrant box remove -f
-```
-
-Clear the local lost of Vagrant boxes:
-```
-$ sudo vagrant global-status --prune
-```
-
-# Creating the Vagrant Boxes
-TBD
-```
-$ sudo vagrant global-status --prune
-```
-
-# Installation order
-TBD
-
-- vagrant vm boxes
-- install master
-- install workers
-- install dashboard
-- install nexus
-- TBD
-
+Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster node (both master and worker nodes).
 
 # Configuring the Host Addresses
 
@@ -136,7 +118,7 @@ After the master node setup has finished, run the subsequent command to set up t
 ```
 Once the nodes have joined the cluster, run the following command to check the status of the respective slave nodes.
 ```
-# kubectl get nodes
+# kubectl get nodes -o wide
 ```
 
 # Setup additional Kubernetes services using Ansible
@@ -182,20 +164,100 @@ $
 ```
 
 ## GitLab
-I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created a installation routine for a GitLab service inside the k8s cluster.
+I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created an installation routine for a GitLab service inside the k8s cluster.
 ```
 $
 ```
 
-## K8s Cheatsheet
-TBD
+# Cheatsheet :: Useful commands
+The following subsections describe some of the most frequent used commands in context of you Kubernetes cluster network.
+
+## Vagrant
+The following commands might be useful while playing around with the Vagrant machines.
+
+Bring up Vagrant boxes:
 ```
-$ kubectl get nodes
+$ sudo vagrant up
 ```
 
-TBD
+Get a list of all local Vagrant boxes:
 ```
-$ kubectl get pods --all-namespaces
+$ sudo vagrant global-status
+```
+
+Remove all local Vagrant boxes:
+```
+$ sudo vagrant box list | cut -f 1 -d ' ' | xargs -L 1 vagrant box remove -f
+```
+
+Clear the local lost of Vagrant boxes:
+```
+$ sudo vagrant global-status --prune
+```
+
+Destroy known Vagrant boxes:
+
+```
+$ sudo vagrant destroy
+```
+
+Remove the known SSh keys, e.g. if one or multiple Vagrant boxes have been destroyed. This command will be necessary before re-creating a VM box, e.g. with the formerly used IP 10.11.12.2:
+```
+$ sudo ssh-keygen -R 10.11.12.2
+```
+
+## Kubernetes
+
+The following command shows all K8s nodes which are currently connected to the cluster network:
+```
+$ sudo kubectl get nodes
+```
+
+The following command also shows all K8s nodes which are currently connected to the cluster network, including some more detailed information on the nodes (e.g. label and node type):
+```
+$ sudo kubectl get nodes --show-labels
+```
+
+Assign a role label to a certain node (e.g. master or worker):
+```
+$ sudo kubectl label node centos82  node-role.kubernetes.io/master=master
+$ sudo kubectl label node centos83  node-role.kubernetes.io/worker=worker
+$ sudo kubectl label node centos84  node-role.kubernetes.io/worker=worker
+```
+
+This command collects cluster node information, e.g. available RAM and CPU. The command below provides all available information for node "centos82":
+```
+$ sudo kubectl describe node centos82
+```
+
+Get all running K8s pods in all known namespaces:
+```
+$ sudo kubectl get pods --all-namespaces
+```
+
+With this command you can watch the K8s container creation process. The following command refreshes the results list for "flannel" pods every 2.0 seconds:
+```
+$ sudo watch kubectl get pods -n flannel
+
+```
+The command above can also be used for other pods and namespaces (e.g. all namespaces):
+```
+sudo watch kubectl get pods --all-namespaces
+```
+
+The subsequent commands lists all known K8s services in the currently known namespaces:
+```
+$ sudo kubectl get services --all-namespaces
+```
+
+Deleting a deployment, e.g. the K8s dashboard:
+```
+$ kubectl delete deployment kubernetes-dashboard --namespace=kube-system.
+```
+
+Get information on a deploymnet failure (e.g. dashboard pod):
+```
+$ sudo kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-7f99b75bf4-6jblg
 ```
 
 # Sources and References:
@@ -207,4 +269,6 @@ $ kubectl get pods --all-namespaces
 * https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
 * https://phoenixnap.com/kb/install-kubernetes-on-ubuntu
 * https://www.digitalocean.com/community/tutorials/so-installieren-und-verwenden-sie-docker-auf-ubuntu-18-04-de
+* https://github.com/kubernetes/dashboard/releases
+* https://docs.projectcalico.org/getting-started/kubernetes/quickstart
 
