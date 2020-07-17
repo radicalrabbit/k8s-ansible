@@ -2,8 +2,8 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-  - name: Install the k8s Dashboard add-on
-    command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
-   # args:
-     #  warn: false # set warn=false to prevent warning
-   # ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
+    - name: Install the k8s Dashboard add-on
+      command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
+      args:
+        warn: false # set warn=false to prevent warning
+      ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
