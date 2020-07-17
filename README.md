@@ -133,6 +133,20 @@ The login procedure requires the admin security token of your k8s cluster. Eithe
 ```
 $ kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
 ```
+The k8s dashboard should be available with an external browser:
+
+Look for the NodePort entry. In both commands you should find a result entry for the NodePort, usually a five digit port number (e.g. 30908):
+```
+$ sudo kubectl -n kube-system get services --all-namespaces
+$ sudo kubectl describe services kubernetes-dashboard --namespace=kubernetes-dashboard
+```
+
+Take the port information from above and combine it with the k8s master IP:
+```
+$ https://10.11.12.2:30908/#/login
+```
+You will probably get a warning telling you that the SSL certifiacte is unsafe (unsigned). Accept and proceed to the login page of the dashboard.
+
 ## Atlassian Jira
 TBD
 ```
