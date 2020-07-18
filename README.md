@@ -22,11 +22,18 @@ Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster no
 
 # Configuring the Host Addresses
 
-* Clone the repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
+* Clone the repository: git clone https://github.com/radicalrabbit/K8s-ansible.git
 * Create multiple servers (e.g. Centos). One master and 1-n workers. 
 * Provide the 'ad_addr' in the env_variables file by setting the IP address of the Kubernetes 
 * Add the IP Addresses of the worker nodes and the master node in the 'hosts' file.
 * Proceed with the steps described below according to your OS (e.g. CentOS).
+
+# Installation of K8s via Script (including Vagrant VMs)
+If you want to perform the full setup of one master node and three worker nodes (Vagrant setup und K8s installation) just execute the following script in the root directory of the project:
+```
+$ ./setup_cluster_CentOS.sh
+```
+Make sure both Vagrant and Ansible are available on your local system - as described above.
 
 # Prepare the Vagrant Boxes
 
@@ -67,10 +74,10 @@ $ sudo systemctl status ssh
 $ sudo ufw allow ssh
 $ systemctl status sshd
 ```
-## Install the k8s master node
+## Install the K8s master node
 TBD
 
-## Install the k8s slave node(s)
+## Install the K8s slave node(s)
 TBD
 
 # Setup the Kubernetes Cluster with Ansible (CentOS 8)
@@ -105,10 +112,10 @@ If you should get any other information that "active (running)" you will probabl
 # systemctl reload sshd
 ```
 
-## Install the k8s master node
+## Install the K8s master node
 After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
 
-* Clone the according GitHub repository: git clone https://github.com/radicalrabbit/k8s-ansible.git
+* Clone the according GitHub repository: git clone https://github.com/radicalrabbit/K8s-ansible.git
 ```
 # git config --global credential.helper store
 # git pull
@@ -121,8 +128,8 @@ After installing Ansible you can start to work with the installatiob scripts pro
 # sudo ansible-playbook setup_master_node.yml
 ```
 
-## Install the k8s slave node(s)
-After the master node setup has finished, run the subsequent command to set up the k8s slave node(s).
+## Install the K8s slave node(s)
+After the master node setup has finished, run the subsequent command to set up the K8s slave node(s).
 ```
 # sudo ansible-playbook setup_worker_nodes.yml
 ```
@@ -135,14 +142,14 @@ Once the nodes have joined the cluster, run the following command to check the s
 TBD
 
 ## Kubernetes Dashboard
-The installation of the k8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml). The login procedure requires the admin security token of your k8s cluster. Either copy the token of your k8s setup from the command line output (k8s master node setup) or execute the subsequent command in a console window of ypur master node:
+The installation of the K8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml). The login procedure requires the admin security token of your K8s cluster. Either copy the token of your K8s setup from the command line output (K8s master node setup) or execute the subsequent command in a console window of ypur master node:
 ```
 $ sudo kubectl describe serviceaccount/dashboard
 $ sudo kubectl describe secrets/dashboard-token-*****
 ```
 ![Dashboard login page](img/1.png)
 
-The dashboard security token should look similay to the example in the image above. The k8s dashboard should be available with an external browser (outside of the K8s network):
+The dashboard security token should look similay to the example in the image above. The K8s dashboard should be available with an external browser (outside of the K8s network):
 
 Look for the NodePort entry. In both commands you should find a result entry for the NodePort, usually a five digit port number (e.g. 30908):
 ```
@@ -150,13 +157,13 @@ $ sudo kubectl -n kube-system get services --all-namespaces
 $ sudo kubectl describe services kubernetes-dashboard --namespace=kubernetes-dashboard
 ```
 
-Take the port information from above and combine it with the k8s master IP:
+Take the port information from above and combine it with the K8s master IP:
 ```
 $ https://10.11.12.2:30908/#/login
 ```
 You will probably get a warning telling you that the SSL certifiacte is unsafe (unsigned). Accept and proceed to the login page of the dashboard. The image below shows the stand login page of the K8s dashboard.
 ![Dashboard login page](img/6.png)
-After logging in with the dashboard secret token that you acquired with the commands above you are ready to use the dashbaord. The dashboard helps you to control the K8s cluster. I personally prefer the terminal console to add nodes or deployment to my K8s network. Nevertheless the dashboard provides a very good overview on the most important information about your K8s pods, service, configuration, etc.
+After logging in with the dashboard secret token that you acquired with the commands above you are ready to use the dashbaord. The dashboard helps you to control the K8s cluster. I personally prefer the terminal console to add nodes or t0 deploy pods in my K8s network. Nevertheless the dashboard provides a very good overview on the most important information about your K8s pods, service, configuration, etc.
 ![Dashboard view](img/5.png)
 ## Atlassian Jira
 TBD
@@ -194,7 +201,7 @@ http://10.11.12.4:32000/
 ```
 According to the node to which the application has been deployed the respective IP could also be "10.11.12.3" or "10.11.12.2". Take a look into your K8s dashboard if you are not sure to which node the app has been deployed. 
 ## GitLab
-I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created an installation routine for a GitLab service inside the k8s cluster.
+I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created an installation routine for a GitLab service inside the K8s cluster.
 ```
 $
 ```
