@@ -1,0 +1,4 @@
+- import_playbook: ../tools/jenkins_pv.yml
+- import_playbook: ../tools/jenkins_pvc.yml
+- import_playbook: ../tools/jenkins_deploy.yml
+- import_playbook: ../tools/jenkins_service.yml

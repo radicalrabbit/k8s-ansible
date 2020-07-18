@@ -188,10 +188,13 @@ $
 ```
 
 ## Jenkins CI Build Server
+With a running K8s cluster and a running Git instance we are ready to deploy a Jenkins server. Use the command below to deploy a Jenkins pod to your K8s cluster:
+```
+$ sudo ansible-playbook setup_jenkins.yml
+```
+One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
+
 TBD
-```
-$
-```
 
 ## Nexus Artifact Management
 In this subsection I will explain how to create a deployment for the Nexus artifact management application. If you cluster setup is up, running and in a healthy condition execute the subsequent command:
