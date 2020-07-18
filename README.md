@@ -1,3 +1,30 @@
+* [Table of Contents](#table-of-contents)
+- [Installing Vagrant](#installing-vagrant)
+- [Configuring the Host Addresses](#configuring-the-host-addresses)
+- [Complete installation of K8s via Script (including Vagrant VMs)](#complete-installation-of-k8s-via-script--including-vagrant-vms-)
+- [Manual installation (Step-by-step)](#manual-installation--step-by-step-)
+  * [Prepare the Vagrant Boxes](#prepare-the-vagrant-boxes)
+  * [Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)](#setup-the-kubernetes-cluster-with-ansible--ubuntu-1804-)
+    + [Prerequisites](#prerequisites)
+    + [Install the K8s master node](#install-the-k8s-master-node)
+    + [Install the K8s slave node(s)](#install-the-k8s-slave-node-s-)
+  * [Setup the Kubernetes Cluster with Ansible (CentOS 8)](#setup-the-kubernetes-cluster-with-ansible--centos-8-)
+    + [Prerequisites](#prerequisites-1)
+    + [Install the K8s master node](#install-the-k8s-master-node-1)
+    + [Install the K8s slave node(s)](#install-the-k8s-slave-node-s--1)
+- [Setup additional Kubernetes services using Ansible](#setup-additional-kubernetes-services-using-ansible)
+  * [Kubernetes Dashboard](#kubernetes-dashboard)
+  * [Atlassian Jira](#atlassian-jira)
+  * [Atlassian Confluence](#atlassian-confluence)
+  * [Atlassian Bitbucket](#atlassian-bitbucket)
+  * [Nexus Artifact Management](#nexus-artifact-management)
+  * [GitLab](#gitlab)
+  * [Jenkins CI Build Server](#jenkins-ci-build-server)
+- [Cheatsheet :: Useful commands](#cheatsheet----useful-commands)
+  * [Vagrant](#vagrant)
+  * [Kubernetes](#kubernetes)
+- [Sources and References:](#sources-and-references-)
+
 # Installing Vagrant
 The Kubernetes node VMs in this project are created by using Vagrant box images. First of all please install Vagrant before proceeding with the next steps:
 
@@ -187,15 +214,6 @@ TBD
 $
 ```
 
-## Jenkins CI Build Server
-With a running K8s cluster and a running Git instance we are ready to deploy a Jenkins server. Use the command below to deploy a Jenkins pod to your K8s cluster:
-```
-$ sudo ansible-playbook setup_jenkins.yml
-```
-One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
-
-TBD
-
 ## Nexus Artifact Management
 In this subsection I will explain how to create a deployment for the Nexus artifact management application. If you cluster setup is up, running and in a healthy condition execute the subsequent command:
 ```
@@ -212,6 +230,15 @@ I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also c
 ```
 $
 ```
+
+## Jenkins CI Build Server
+With a running K8s cluster and a running Git instance we are ready to deploy a Jenkins server. Use the command below to deploy a Jenkins pod to your K8s cluster:
+```
+$ sudo ansible-playbook setup_jenkins.yml
+```
+One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
+
+TBD
 
 # Cheatsheet :: Useful commands
 The following subsections describe some of the most frequent used commands in context of you Kubernetes cluster network.
