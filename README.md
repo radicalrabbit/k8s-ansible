@@ -28,6 +28,14 @@ Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster no
 * Add the IP Addresses of the worker nodes and the master node in the 'hosts' file.
 * Proceed with the steps described below according to your OS (e.g. CentOS).
 
+# Prepare the Vagrant Boxes
+
+![Alt text](img/3.png)
+```
+$ cd vagrant
+$ sudo vagrant up
+```
+
 # Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
 
 ## Prerequisites
@@ -125,15 +133,13 @@ Once the nodes have joined the cluster, run the following command to check the s
 TBD
 
 ## Kubernetes Dashboard
-The installation of the k8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml). Check the following address to see if the dashboad web application is up and running:
+The installation of the k8s Dashboard service is automatically executed in the master nodes Ansible setup (Ansible file located in services/dashboard.yml). The login procedure requires the admin security token of your k8s cluster. Either copy the token of your k8s setup from the command line output (k8s master node setup) or execute the subsequent command in a console window of ypur master node:
 ```
-$ http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/
+$ sudo kubectl describe serviceaccount/dashboard
+$ sudo kubectl describe secrets/dashboard-token-*****
+
 ```
-The login procedure requires the admin security token of your k8s cluster. Either copy the token of your k8s setup from the command line output (k8s master node setup) or execute the subsequent command in a console window of ypur master node:
-```
-$ kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
-```
-The k8s dashboard should be available with an external browser:
+The k8s dashboard should be available with an external browser (outside of the K8s network):
 
 Look for the NodePort entry. In both commands you should find a result entry for the NodePort, usually a five digit port number (e.g. 30908):
 ```
@@ -279,6 +285,7 @@ $ sudo kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-7f99b75
 * https://devopscube.com/setup-nexus-kubernetes/
 * https://github.com/ctienshi/kubernetes-ansible
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
+* https://www.edureka.co/blog/kubernetes-dashboard/
 * https://linuxconfig.org/install-ssh-server-on-redhat-8
 * https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
 * https://phoenixnap.com/kb/install-kubernetes-on-ubuntu

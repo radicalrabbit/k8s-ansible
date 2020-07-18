@@ -3,7 +3,13 @@
   become: yes
   tasks:
     - name: Install the k8s Dashboard add-on
-      command: kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
+      command: kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.3/aio/deploy/recommended.yaml
       args:
         warn: false # set warn=false to prevent warning
       ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
+
+    - name: Create the Service-Account for the Dashboard
+      command: kubectl create serviceaccount dashboard -n default
+
+    - name: Define the Clusterrolebinding vor the Dashboard
+      command: kubectl create clusterrolebinding dashboard-admin -n default  --clusterrole=cluster-admin  --serviceaccount=default:dashboard
