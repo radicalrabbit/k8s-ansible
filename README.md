@@ -1,18 +1,18 @@
 # Table of Contents
 - [Installing Vagrant](#installing-vagrant)
 - [Configuring the Host Addresses](#configuring-the-host-addresses)
-- [Complete installation of K8s via Script (including Vagrant VMs)](#complete-installation-of-k8s-via-script--including-vagrant-vms-)
-- [Manual installation (Step-by-step)](#manual-installation--step-by-step-)
+- [Complete Installation of K8s via Script (including Vagrant VMs)](#complete-installation-of-k8s-via-script--including-vagrant-vms-)
+- [Manual Installation (Step-by-Step Guide)](#manual-installation--step-by-step-)
   * [Prepare the Vagrant Boxes](#prepare-the-vagrant-boxes)
   * [Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)](#setup-the-kubernetes-cluster-with-ansible--ubuntu-1804-)
     + [Prerequisites](#prerequisites)
-    + [Install the K8s master node](#install-the-k8s-master-node)
-    + [Install the K8s slave node(s)](#install-the-k8s-slave-node-s-)
+    + [Install the K8s Master Node](#install-the-k8s-master-node)
+    + [Install the K8s Worker Node(s)](#install-the-k8s-slave-node-s-)
   * [Setup the Kubernetes Cluster with Ansible (CentOS 8)](#setup-the-kubernetes-cluster-with-ansible--centos-8-)
     + [Prerequisites](#prerequisites-1)
     + [Install the K8s master node](#install-the-k8s-master-node-1)
     + [Install the K8s slave node(s)](#install-the-k8s-slave-node-s--1)
-- [Setup additional Kubernetes services using Ansible](#setup-additional-kubernetes-services-using-ansible)
+- [Setup additional Kubernetes Services using Ansible](#setup-additional-kubernetes-services-using-ansible)
   * [Kubernetes Dashboard](#kubernetes-dashboard)
   * [Atlassian Jira](#atlassian-jira)
   * [Atlassian Confluence](#atlassian-confluence)
@@ -20,10 +20,10 @@
   * [Nexus Artifact Management](#nexus-artifact-management)
   * [GitLab](#gitlab)
   * [Jenkins CI Build Server](#jenkins-ci-build-server)
-- [Cheatsheet :: Useful commands](#cheatsheet----useful-commands)
+- [Cheatsheet :: Useful Commands](#cheatsheet----useful-commands)
   * [Vagrant](#vagrant)
   * [Kubernetes](#kubernetes)
-- [Sources and References:](#sources-and-references-)
+- [Sources and References](#sources-and-references-)
 
 # Installing Vagrant
 The Kubernetes node VMs in this project are created by using Vagrant box images. First of all please install Vagrant before proceeding with the next steps:
@@ -240,7 +240,7 @@ One of the most significant advantages of a K8s-driven Jenkins is that we can us
 
 TBD
 
-# Cheatsheet :: Useful commands
+# Cheatsheet :: Useful Commands
 The following subsections describe some of the most frequent used commands in context of you Kubernetes cluster network.
 
 ## Vagrant
