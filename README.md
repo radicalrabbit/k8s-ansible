@@ -139,9 +139,10 @@ The installation of the k8s Dashboard service is automatically executed in the m
 ```
 $ sudo kubectl describe serviceaccount/dashboard
 $ sudo kubectl describe secrets/dashboard-token-*****
-
 ```
-The k8s dashboard should be available with an external browser (outside of the K8s network):
+![Dashboard login page](img/1.png)
+
+The dashboard security token should look similay to the example in the image above. The k8s dashboard should be available with an external browser (outside of the K8s network):
 
 Look for the NodePort entry. In both commands you should find a result entry for the NodePort, usually a five digit port number (e.g. 30908):
 ```
@@ -156,7 +157,7 @@ $ https://10.11.12.2:30908/#/login
 You will probably get a warning telling you that the SSL certifiacte is unsafe (unsigned). Accept and proceed to the login page of the dashboard. The image below shows the stand login page of the K8s dashboard.
 ![Dashboard login page](img/6.png)
 After logging in with the dashboard secret token that you acquired with the commands above you are ready to use the dashbaord. The dashboard helps you to control the K8s cluster. I personally prefer the terminal console to add nodes or deployment to my K8s network. Nevertheless the dashboard provides a very good overview on the most important information about your K8s pods, service, configuration, etc.
-![Dashboard login page](img/5.png)
+![Dashboard view](img/5.png)
 ## Atlassian Jira
 TBD
 ```
@@ -182,11 +183,16 @@ $
 ```
 
 ## Nexus Artifact Management
-TBD
+In this subsection I will explain how to create a deployment for the Nexus artifact management application. If you cluster setup is up, running and in a healthy condition execute the subsequent command:
 ```
-$
+$ sudo ansible-playbook setup_nexus.yml
 ```
-
+![Nexus deploy](img/7.png)
+After the deployment procedure has finished the Nexus App should be available in an external browser. In this case the pod has been deployed to the CentOS84 node. If you did not change the IP setup for the cluster node, CentOS84 should be accessible at "10.11.12.4". If the app has been deployed to the node CentOS84 the address should be:
+```
+http://10.11.12.4:32000/
+```
+According to the node to which the application has been deployed the respective IP could also be "10.11.12.3" or "10.11.12.2". Take a look into your K8s dashboard if you are not sure to which node the app has been deployed. 
 ## GitLab
 I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created an installation routine for a GitLab service inside the k8s cluster.
 ```
@@ -202,6 +208,16 @@ The following commands might be useful while playing around with the Vagrant mac
 Bring up Vagrant boxes:
 ```
 $ sudo vagrant up
+```
+
+Suspend the running Vagrant boxes:
+```
+$ sudo vagrant suspend
+```
+
+Halt the running Vagrant boxes:
+```
+$ sudo vagrant halt
 ```
 
 Get a list of all local Vagrant boxes:
@@ -258,6 +274,9 @@ Get all running K8s pods in all known namespaces:
 ```
 $ sudo kubectl get pods --all-namespaces
 ```
+The command above will show a list of known pod deployments in your cluster (see example below).
+
+![Kubernetes pod overview](img/2.png)
 
 With this command you can watch the K8s container creation process. The following command refreshes the results list for "flannel" pods every 2.0 seconds:
 ```
