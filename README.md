@@ -55,14 +55,14 @@ Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster no
 * Add the IP Addresses of the worker nodes and the master node in the 'hosts' file.
 * Proceed with the steps described below according to your OS (e.g. CentOS).
 
-# Complete installation of K8s via Script (including Vagrant VMs)
+# Complete Installation of K8s via Script (including Vagrant VMs)
 If you want to perform the full setup of one master node and three worker nodes (Vagrant setup und K8s installation) just execute the following script in the root directory of the project:
 ```
 $ ./setup_cluster_CentOS.sh
 ```
 Make sure both Vagrant and Ansible are available on your local system - as described above.
 
-# Manual installation (Step-by-step)
+# Manual Installation (Step-by-Step Guide)
 In contrast to the automatic setup described in the previous chapter the subsequent sections show the manual steps for the complete K8s cluster installation.
 
 ## Prepare the Vagrant Boxes
@@ -143,7 +143,7 @@ If you should get any other information that "active (running)" you will probabl
 # systemctl reload sshd
 ```
 
-### Install the K8s master node
+### Install the K8s Master Node
 After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
 
 * Clone the according GitHub repository: git clone https://github.com/radicalrabbit/K8s-ansible.git
@@ -159,7 +159,7 @@ After installing Ansible you can start to work with the installatiob scripts pro
 # sudo ansible-playbook setup_master_node.yml
 ```
 
-### Install the K8s slave node(s)
+### Install the K8s Worker Node(s)
 After the master node setup has finished, run the subsequent command to set up the K8s slave node(s).
 ```
 # sudo ansible-playbook setup_worker_nodes.yml
@@ -344,7 +344,7 @@ Get information on a deploymnet failure (e.g. dashboard pod):
 $ sudo kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-7f99b75bf4-6jblg
 ```
 
-# Sources and References:
+# Sources and References
 * https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
 * https://devopscube.com/setup-nexus-kubernetes/
 * https://github.com/ctienshi/kubernetes-ansible
