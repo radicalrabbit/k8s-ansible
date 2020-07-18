@@ -28,14 +28,17 @@ Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster no
 * Add the IP Addresses of the worker nodes and the master node in the 'hosts' file.
 * Proceed with the steps described below according to your OS (e.g. CentOS).
 
-# Installation of K8s via Script (including Vagrant VMs)
+# Complete installation of K8s via Script (including Vagrant VMs)
 If you want to perform the full setup of one master node and three worker nodes (Vagrant setup und K8s installation) just execute the following script in the root directory of the project:
 ```
 $ ./setup_cluster_CentOS.sh
 ```
 Make sure both Vagrant and Ansible are available on your local system - as described above.
 
-# Prepare the Vagrant Boxes
+# Manual installation (Step-by-step)
+In contrast to the automatic setup described in the previous chapter the subsequent sections show the manual steps for the complete K8s cluster installation.
+
+## Prepare the Vagrant Boxes
 
 Preparing the virtual machines for the K8s cluster is quite easy. If you have an installation of vagrant (version >= 2.9) on you local system just execute the two commands below:
 ```
@@ -45,9 +48,10 @@ $ sudo vagrant up
 After executing the "vagrant up" command three virtual machines will be prepared on your local system. The hosts centos82, centos83 and centos84 will be provisioned from the official Vagrant CentOS8 base box image. The installation will give you a whole heap of console output as shown in the image below.
 ![Vagrant setup](img/3.png)
 
-# Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
+## Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
+The following sections describe the manual installation of all required packes on Ubuntu OS.
 
-## Prerequisites
+### Prerequisites
 The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please execute the following commands inside a terminal console of your system:
 ```
 $ sudo apt update && sudo apt upgrade -y
@@ -74,15 +78,15 @@ $ sudo systemctl status ssh
 $ sudo ufw allow ssh
 $ systemctl status sshd
 ```
-## Install the K8s master node
+### Install the K8s master node
 TBD
 
-## Install the K8s slave node(s)
+### Install the K8s slave node(s)
 TBD
 
-# Setup the Kubernetes Cluster with Ansible (CentOS 8)
+## Setup the Kubernetes Cluster with Ansible (CentOS 8)
 
-## Prerequisites
+### Prerequisites
 The installation artifacts provided in this repository require an installation of Ansible (>= 2.9). Please use the following commands inside a terminal console of your system (Note: Some of the subsequent commands must be confirmed using the "y" key):
 
 ```
@@ -112,7 +116,7 @@ If you should get any other information that "active (running)" you will probabl
 # systemctl reload sshd
 ```
 
-## Install the K8s master node
+### Install the K8s master node
 After installing Ansible you can start to work with the installatiob scripts provided in the Git repository:
 
 * Clone the according GitHub repository: git clone https://github.com/radicalrabbit/K8s-ansible.git
@@ -128,7 +132,7 @@ After installing Ansible you can start to work with the installatiob scripts pro
 # sudo ansible-playbook setup_master_node.yml
 ```
 
-## Install the K8s slave node(s)
+### Install the K8s slave node(s)
 After the master node setup has finished, run the subsequent command to set up the K8s slave node(s).
 ```
 # sudo ansible-playbook setup_worker_nodes.yml
