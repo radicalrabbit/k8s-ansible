@@ -1,4 +1,4 @@
-* [Table of Contents](#table-of-contents)
+# Table of Contents
 - [Installing Vagrant](#installing-vagrant)
 - [Configuring the Host Addresses](#configuring-the-host-addresses)
 - [Complete installation of K8s via Script (including Vagrant VMs)](#complete-installation-of-k8s-via-script--including-vagrant-vms-)
