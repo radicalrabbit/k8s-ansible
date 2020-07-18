@@ -30,11 +30,13 @@ Note: I recommend to use at least 8Gb of RAM and 2 CPU cores for each cluster no
 
 # Prepare the Vagrant Boxes
 
-![Alt text](img/3.png)
+Preparing the virtual machines for the K8s cluster is quite easy. If you have an installation of vagrant (version >= 2.9) on you local system just execute the two commands below:
 ```
 $ cd vagrant
 $ sudo vagrant up
 ```
+After executing the "vagrant up" command three virtual machines will be prepared on your local system. The hosts centos82, centos83 and centos84 will be provisioned from the official Vagrant CentOS8 base box image. The installation will give you a whole heap of console output as shown in the image below.
+![Vagrant setup](img/3.png)
 
 # Setup the Kubernetes Cluster with Ansible (Ubuntu 18.04)
 
@@ -151,8 +153,10 @@ Take the port information from above and combine it with the k8s master IP:
 ```
 $ https://10.11.12.2:30908/#/login
 ```
-You will probably get a warning telling you that the SSL certifiacte is unsafe (unsigned). Accept and proceed to the login page of the dashboard.
-
+You will probably get a warning telling you that the SSL certifiacte is unsafe (unsigned). Accept and proceed to the login page of the dashboard. The image below shows the stand login page of the K8s dashboard.
+![Dashboard login page](img/6.png)
+After logging in with the dashboard secret token that you acquired with the commands above you are ready to use the dashbaord. The dashboard helps you to control the K8s cluster. I personally prefer the terminal console to add nodes or deployment to my K8s network. Nevertheless the dashboard provides a very good overview on the most important information about your K8s pods, service, configuration, etc.
+![Dashboard login page](img/5.png)
 ## Atlassian Jira
 TBD
 ```
