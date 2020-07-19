@@ -1,15 +1,23 @@
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: jenkins-pv-volume
-  labels:
-    type: local
-spec:
-  storageClassName: manual
-  capacity:
-    storage: 10Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: "/var/jenkins_home"
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a Jenkins PV
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: PersistentVolume
+        metadata:
+          name: jenkins-pv-volume
+          labels:
+            type: local
+        spec:
+          storageClassName: manual
+          capacity:
+            storage: 10Gi
+          accessModes:
+            - ReadWriteOnce
+          hostPath:
+            path: "/var/jenkins_home"
 

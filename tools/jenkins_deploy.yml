@@ -2,7 +2,7 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-  - name: Create a Jenkins app
+  - name: Create a Jenkins App
     k8s:
       state: present
       definition:
@@ -12,14 +12,19 @@
           name: jenkins
           namespace: dev-tools
         spec:
+          selector:
+            matchLabels:
+              app: jenkins
           replicas: 1
           template:
             metadata:
               labels:
                 app: jenkins
+              name: jenkins
             spec:
               securityContext:
-                fsGroup: 99
+                fsGroup: 1000 
+                runAsUser: 0
               containers:
                 - name: jenkins
                   image: jenkins/jenkins:latest
@@ -31,7 +36,6 @@
                       mountPath: /var/jenkins_home
                   ports:
                     - containerPort: 8080
-                    - containerPort: 50000
               volumes:
                 - name: jenkins-pv-volume
                   persistentVolumeClaim:

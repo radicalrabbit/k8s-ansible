@@ -12,7 +12,6 @@
           name: nexus-pv-volume
           labels:
             type: local
-          namespace: dev-tools
         spec:
           storageClassName: manual
           capacity:
