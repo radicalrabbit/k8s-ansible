@@ -6,4 +6,5 @@ sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
 systemctl disable firewalld
 # enable vagrant PasswordAuthentication
 sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+modprobe br_netfilter
 reboot

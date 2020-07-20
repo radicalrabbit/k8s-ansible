@@ -2,7 +2,7 @@
 - hosts: kubernetes-master-nodes
   become: yes
   tasks:
-  - name: Create a Jenkins Service
+  - name: Create a Jenkins NodePort Service
     k8s:
       state: present
       definition:
@@ -11,10 +11,6 @@
         metadata:
           name: jenkins-service
           namespace: dev-tools
-          annotations:
-            prometheus.io/scrape: 'true'
-            prometheus.io/path:   /
-            prometheus.io/port:   '8080'
         spec:
           selector: 
             app: jenkins

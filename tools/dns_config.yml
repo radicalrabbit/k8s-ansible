@@ -1,0 +1,18 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a Jenkins DNS ConfigMap
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+          labels:
+            addonmanager.kubernetes.io/mode: EnsureExists
+          name: kube-dns
+          namespace: kube-system
+        data:
+          upstreamNameservers: |
+            10.11.12.2

@@ -230,12 +230,28 @@ I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also c
 ```
 $
 ```
-
+TBD
 ## Jenkins CI Build Server
 With a running K8s cluster and a running Git instance we are ready to deploy a Jenkins server. Use the command below to deploy a Jenkins pod to your K8s cluster:
 ```
 $ sudo ansible-playbook setup_jenkins.yml
 ```
+Now we need the NodePort of the Jenkins instance and the IP of the node to which the pod has been deployed. Use the command below to find the according port:
+```
+$ sudo kubectl get services --all-namespaces
+```
+You should see a list of known services analogous to the screenshot below.
+![Jenkins service](img/8.png)
+Now we nee the information to which node the pod has bee deployed. Use the subsequent command to get the according node:
+![Jenkins deployment](img/9.png)
+In our case the Jenkins mod has been deployed to the node centos84. From this follows that the Jenkins UI is running at http://10.11.12.4:32100. A fresh and clean installation of Jenkins usually shows a page asking for the initial password (see image below).
+![Jenkins startup](img/10.png)
+You can get the according key either directly from the Jenkins installation directory (SSH to the server node) or from the Kubernetes dashboard log. The screenshot below shows the log view of a running Jenkins pod.
+![Jenkins startup](img/11.png)
+Copy the initial password and sign-in to the Jenkins UI. In the next step you will be asked to install additional plug-ins. 
+
+TBD
+
 One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
 
 TBD
@@ -326,7 +342,7 @@ $ sudo watch kubectl get pods -n flannel
 ```
 The command above can also be used for other pods and namespaces (e.g. all namespaces):
 ```
-sudo watch kubectl get pods --all-namespaces
+$ sudo watch kubectl get pods --all-namespaces
 ```
 
 The subsequent commands lists all known K8s services in the currently known namespaces:
@@ -356,4 +372,4 @@ $ sudo kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-7f99b75
 * https://www.digitalocean.com/community/tutorials/so-installieren-und-verwenden-sie-docker-auf-ubuntu-18-04-de
 * https://github.com/kubernetes/dashboard/releases
 * https://docs.projectcalico.org/getting-started/kubernetes/quickstart
-
+* https://upcloud.com/community/tutorials/install-kubernetes-cluster-centos-8/

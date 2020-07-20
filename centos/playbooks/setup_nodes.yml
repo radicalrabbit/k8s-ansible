@@ -29,6 +29,14 @@
      yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
      yum install docker-ce -y --nobest
 
+  - name: Installing bind-utils
+    shell: |
+     sudo yum install -y bind-utils
+
+  - name: Installing dsnmasq
+    shell: |
+     yum install -y dnsmasq
+
   - name: Install Python3
     shell: |
      yum install -y python3
@@ -62,3 +70,21 @@
 
   - name: Enabling firewall bridge rule
     shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+
+  - name: Enabling firewall bridge rule
+    shell: sysctl net.bridge.bridge-nf-call-iptables=1
+
+  - name: Enabling permanent firewall masquerade
+    shell: firewall-cmd --add-masquerade --permanent
+
+  - name: Enabling K8s ports to firewall
+    shell: firewall-cmd --zone=public --permanent --add-port={6443,2379,2380,10250,10251,10252}/tcp
+  
+  - name: Enabling cluster addresses in firewall 
+    shell: firewall-cmd --zone=public --permanent --add-rich-rule 'rule family=ipv4 source address=172.17.0.0/16 accept'
+  
+  - name: Reload the firewall rules
+    shell: firewall-cmd --reload
+
+  - name: Reload sysctl rules
+    shell: sysctl --system
