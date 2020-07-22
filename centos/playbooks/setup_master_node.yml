@@ -25,6 +25,7 @@
      sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
   - name: Install Network Add-on
+    #command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
     command: kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
     args:
        warn: false # set warn=false to prevent warning

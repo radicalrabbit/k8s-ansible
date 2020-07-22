@@ -36,6 +36,7 @@
                       mountPath: /var/jenkins_home
                   ports:
                     - containerPort: 8080
+                  dnsPolicy: "ClusterFirst"
               volumes:
                 - name: jenkins-pv-volume
                   persistentVolumeClaim:

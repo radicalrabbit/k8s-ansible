@@ -1,6 +1,6 @@
 ad_addr: 10.11.12.2
-cidr_v: 10.10.0.0/16
-#cidr_v: 10.244.0.0/16
+#cidr_v: 10.10.0.0/16
+cidr_v: 10.244.0.0/16
 
 packages:
 - kubeadm
@@ -12,11 +12,13 @@ services:
 - firewalld
 
 ports:
+- "2379/tcp"
+- "2380/tcp"
+- "4243/tcp"
 - "6443/tcp"
 - "10250/tcp"
-- "80/tcp"
-- "8080/tcp"
-- "8081/tcp"
-- "4243/tcp"
+- "10251/tcp"
+- "10252/tcp"
+- "10255/tcp"
 
 token_file: join_token

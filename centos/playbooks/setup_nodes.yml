@@ -33,7 +33,7 @@
     shell: |
      sudo yum install -y bind-utils
 
-  - name: Installing dsnmasq
+  - name: Installing dnsmasq
     shell: |
      yum install -y dnsmasq
 
@@ -68,8 +68,8 @@
      immediate: yes
     with_items: "{{ ports }}"
 
-  - name: Enabling firewall bridge rule
-    shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+  #- name: Enabling firewall bridge rule
+  #  shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
 
   - name: Enabling firewall bridge rule
     shell: sysctl net.bridge.bridge-nf-call-iptables=1
@@ -85,6 +85,15 @@
   
   - name: Reload the firewall rules
     shell: firewall-cmd --reload
+
+  - name: Set IPv4 sysctl rules
+    shell: sysctl -w net.ipv4.ip_forward=1
+
+  - name: Set I6v6 sysctl rules
+    shell: sysctl -w net.bridge.bridge-nf-call-ip6tables=1
+
+  - name: Set IPv4 sysctl rules
+    shell: sysctl -w net.bridge.bridge-nf-call-iptables=1
 
   - name: Reload sysctl rules
     shell: sysctl --system

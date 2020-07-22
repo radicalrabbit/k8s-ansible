@@ -248,11 +248,19 @@ In our case the Jenkins mod has been deployed to the node centos84. From this fo
 ![Jenkins startup](img/10.png)
 You can get the according key either directly from the Jenkins installation directory (SSH to the server node) or from the Kubernetes dashboard log. The screenshot below shows the log view of a running Jenkins pod.
 ![Jenkins startup](img/11.png)
-Copy the initial password and sign-in to the Jenkins UI. In the next step you will be asked to install additional plug-ins. 
-
-TBD
+Copy the initial password and sign-in to the Jenkins UI. In the next step you will be asked to install additional plug-ins. For the next few steps you will need the Kubernetes cloud plug-in and its dependencies.
 
 One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
+![Jenkins K8s plug-in install](img/13.png)
+If you should face connection errors while updating the available plugins list - this is usually related to firewall issues. After install in the cloud plug-in you will need to do some minor configuration steps. First of all look for the adress of your master node. 
+```
+sudo kubectl cluster-info | grep master
+```
+You will get the address of your cluster's master node as shown in the image below.
+![Jenkins K8s plug-in install](img/14.png)
+Take the address information, e.g. https://10.11.12.2:6443 and provide it as you Kubernetes Url in the plug-in configuration page (see image below).
+![Jenkins K8s plug-in install](img/12.png)
+Test the settings by clicking "Test Connection". If the settings are valid you should see a message saying "Connected to Kubernetes".
 
 TBD
 
@@ -361,15 +369,16 @@ $ sudo kubectl -n kubernetes-dashboard describe pod kubernetes-dashboard-7f99b75
 ```
 
 # Sources and References
-* https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
 * https://devopscube.com/setup-nexus-kubernetes/
-* https://github.com/ctienshi/kubernetes-ansible
+* https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#installing-ansible-on-ubuntu
+* https://docs.projectcalico.org/getting-started/kubernetes/quickstart
 * https://www.edureka.co/blog/install-kubernetes-on-ubuntu
 * https://www.edureka.co/blog/kubernetes-dashboard/
+* https://github.com/ctienshi/kubernetes-ansible
+* https://github.com/kubernetes/dashboard/releases
 * https://linuxconfig.org/install-ssh-server-on-redhat-8
 * https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
 * https://phoenixnap.com/kb/install-kubernetes-on-ubuntu
+* https://www.blazemeter.com/blog/how-to-setup-scalable-jenkins-on-top-of-a-kubernetes-cluster
 * https://www.digitalocean.com/community/tutorials/so-installieren-und-verwenden-sie-docker-auf-ubuntu-18-04-de
-* https://github.com/kubernetes/dashboard/releases
-* https://docs.projectcalico.org/getting-started/kubernetes/quickstart
 * https://upcloud.com/community/tutorials/install-kubernetes-cluster-centos-8/
