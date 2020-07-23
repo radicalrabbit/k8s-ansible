@@ -29,7 +29,7 @@
                   image: "atlassian/bitbucket-server"
                   resources:
                     requests:
-                      memory: "2G"
+                      memory: "1G"
                   volumeMounts:
                     - name: "bitbucket-pv-volume"
                       mountPath: /var/atlassian/application-data/bitbucket
