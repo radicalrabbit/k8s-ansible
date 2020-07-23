@@ -1,0 +1,4 @@
+- import_playbook: ../tools/bitbucket_pv.yml
+- import_playbook: ../tools/bitbucket_pvc.yml
+- import_playbook: ../tools/bitbucket_deploy.yml
+- import_playbook: ../tools/bitbucket_service.yml

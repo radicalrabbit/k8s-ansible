@@ -1,5 +1,4 @@
 ad_addr: 10.11.12.2
-#cidr_v: 10.10.0.0/16
 cidr_v: 10.244.0.0/16
 
 packages:
@@ -12,13 +11,19 @@ services:
 - firewalld
 
 ports:
+- "179/tcp"
 - "2379/tcp"
 - "2380/tcp"
 - "4243/tcp"
 - "6443/tcp"
+- "6783/tcp"
+- "8285/udp"
+- "8472/tcp"
+- "8472/udp"
 - "10250/tcp"
 - "10251/tcp"
 - "10252/tcp"
 - "10255/tcp"
+- "30000-32767/tcp"
 
 token_file: join_token

@@ -1,0 +1,4 @@
+- import_playbook: ../tools/gitlab_pv.yml
+- import_playbook: ../tools/gitlab_pvc.yml
+- import_playbook: ../tools/gitlab_deploy.yml
+- import_playbook: ../tools/gitlab_service.yml

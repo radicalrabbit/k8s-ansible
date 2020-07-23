@@ -1,0 +1,21 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a Bitbucket service
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: bitbucket-service
+          namespace: dev-tools
+        spec:
+          selector: 
+            app: bitbucket
+          type: NodePort  
+          ports:
+          - port: 8100
+            targetPort: 7990
+            nodePort: 30700

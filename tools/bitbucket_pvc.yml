@@ -1,11 +1,20 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: bitbucket-pv-claim
-spec:
-  storageClassName: manual
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 3Gi
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a PVC for the Bitbucket App
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: bitbucket-pv-claim
+          namespace: dev-tools
+        spec:
+          storageClassName: manual
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
