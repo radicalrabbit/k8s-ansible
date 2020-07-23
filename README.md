@@ -224,7 +224,8 @@ After the deployment procedure has finished the Nexus App should be available in
 ```
 http://10.11.12.4:32000/
 ```
-According to the node to which the application has been deployed the respective IP could also be "10.11.12.3" or "10.11.12.2". Take a look into your K8s dashboard if you are not sure to which node the app has been deployed. 
+According to the node to which the application has been deployed the respective IP could also be "10.11.12.3" or "10.11.12.2". Take a look into your K8s dashboard if you are not sure to which node the app has been deployed. The nexus artifact management server will show up with a comparable view as shown below.
+![Nexus artifact management](img/15.png)
 ## GitLab
 I prefer to use Bitbucket for hosting my Git repositories. Nevertheless I also created an installation routine for a GitLab service inside the K8s cluster.
 ```
@@ -248,14 +249,15 @@ In our case the Jenkins mod has been deployed to the node centos84. From this fo
 ![Jenkins startup](img/10.png)
 You can get the according key either directly from the Jenkins installation directory (SSH to the server node) or from the Kubernetes dashboard log. The screenshot below shows the log view of a running Jenkins pod.
 ![Jenkins startup](img/11.png)
-Copy the initial password and sign-in to the Jenkins UI. In the next step you will be asked to install additional plug-ins. For the next few steps you will need the Kubernetes cloud plug-in and its dependencies.
+Copy the initial password and sign-in to the Jenkins UI. In the next step you will be asked to install additional plug-ins. For the next few steps you will need the Kubernetes cloud plug-in and its dependencies. If the Jenkins pod is able to connect to the internet update server you should see the automatic plug-in install process as shown in the image below.
+![Jenkins K8s plug-in update](img/16.png)
 One of the most significant advantages of a K8s-driven Jenkins is that we can use the pod network of the K8s cluster for build processes. The following lines describe the installation process for Docker-in-Docker using the K8s pod network.
 ![Jenkins K8s plug-in install](img/13.png)
 If you should face connection errors while updating the available plugins list - this is usually related to firewall issues. After install in the cloud plug-in you will need to do some minor configuration steps. First of all look for the adress of your master node. 
 ```
 sudo kubectl cluster-info | grep master
 ```
-You will get the address of your cluster's master node as shown in the image below. You will also need a secret key for the clod connection - just use the service account token as connection credentials (see above how to get the token string).
+You will get the address of your cluster's master node as shown in the image below. You will also need a secret key for the cloud connection - just use the service account token as connection credentials (see above how to get the token string).
 ![Jenkins K8s plug-in install](img/14.png)
 Take the address information, e.g. https://10.11.12.2:6443 and provide it as you Kubernetes Url in the plug-in configuration page (see image below).
 ![Jenkins K8s plug-in install](img/12.png)
