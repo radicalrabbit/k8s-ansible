@@ -4,11 +4,27 @@ cidr_v: 10.244.0.0/16
 packages:
 - kubeadm
 - kubectl
+- firewalld
+- yum-utils
+- device-mapper-persistent-data
+- lvm2
+- bind-utils
+- dnsmasq
+- python3
 
 services:
 - docker
 - kubelet
 - firewalld
+
+pip_packages:
+- openshift
+- kubernetes
+
+sysctl:
+- "net.ipv4.ip_forward"
+- "net.bridge.bridge-nf-call-ip6tables"
+- "net.bridge.bridge-nf-call-iptables"
 
 ports:
 - "179/tcp"

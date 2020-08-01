@@ -22,36 +22,20 @@
       gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
         https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
-  - name: Installing Docker and firewalld
-    shell: |
-     yum install firewalld -y
-     yum install -y yum-utils device-mapper-persistent-data lvm2
-     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-     yum install docker-ce -y --nobest
-
-  - name: Installing bind-utils
-    shell: |
-     sudo yum install -y bind-utils
-
-  - name: Installing dnsmasq
-    shell: |
-     yum install -y dnsmasq
-
-  - name: Install Python3
-    shell: |
-     yum install -y python3
-   
-  - pip:
-      name: openshift
-
-  - pip:
-      name: kubernetes
-
   - name: Installing required packages
     yum:
-     name: "{{ item }}"
+     name: "{{ packages }}"
      state: present
-    with_items: "{{ packages }}"
+
+  - name: Add docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: Installing docker package
+    shell: yum install -y docker-ce --nobest
+
+  - name: Installing required pip packages
+    pip:
+      name: "{{ pip_packages }}"
 
   - name: Starting and enabling the services
     service:
@@ -60,7 +44,7 @@
      enabled: yes
     with_items: "{{ services }}"
 
-  - name: Allow ports in firewall demon
+  - name: Allow ports in firewall daemon
     firewalld:
      port: "{{ item }}"
      state: enabled
@@ -81,7 +65,11 @@
     shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
 
   - name: Enabling permanent firewall masquerade and public zone
-    shell: firewall-cmd --zone=public --add-masquerade --permanent
+    firewalld:
+      zone: public
+      state: enabled
+      masquerade: yes
+      permanent: yes
 
   - name: Allow Network Ports in Firewalld
     firewalld:
@@ -91,20 +79,22 @@
      immediate: yes
     with_items: "{{ ports }}"
 
-  - name: Enabling cluster addresses in firewall 
-    shell: firewall-cmd --zone=public --permanent --add-rich-rule 'rule family=ipv4 source address="{{ cidr_v }}" accept'
-  
+  - name: Enabling cluster addresses in firewall
+    firewalld:
+      zone: public
+      state: enabled
+      permanent: yes
+      rich_rule: rule family=ipv4 source address="{{ cidr_v }}" accept
+
   - name: Reload the firewall rules
     shell: firewall-cmd --reload
 
-  - name: Set IPv4 sysctl rules
-    shell: sysctl -w net.ipv4.ip_forward=1
-
-  - name: Set I6v6 sysctl rules
-    shell: sysctl -w net.bridge.bridge-nf-call-ip6tables=1
-
-  - name: Set IPv4 sysctl rules
-    shell: sysctl -w net.bridge.bridge-nf-call-iptables=1
+  - name: Set sysctl rules
+    sysctl:
+      name: "{{ item }}"
+      value: '1'
+      sysctl_set: yes
+    with_items: "{{ sysctl }}"
 
   - name: Reload sysctl rules
     shell: sysctl --system
