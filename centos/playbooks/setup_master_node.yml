@@ -41,14 +41,15 @@
        src: proxy_service
        dest: "/lib/systemd/system/kubectlproxy.service"
 
-  - name: Enable the proxy service demon
-    command: systemctl enable kubectlproxy.service
-
   - name: Reload the systemctl demon
-    command: systemctl daemon-reload
+    systemd:
+      daemon_reload: yes
 
-  - name: Restart the proxy service demon
-    command: systemctl restart kubectlproxy.service
+  - name: Enable the proxy service demon
+    systemd:
+      state: restarted
+      enabled: yes
+      name: kubectlproxy.service
 
   - name: Create a namespace for the development tools
     command: kubectl create namespace dev-tools
