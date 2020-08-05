@@ -1,17 +1,45 @@
-ad_addr: 192.168.122.7
-cidr_v: 172.16.0.0/16
+ad_addr: 10.11.12.2
+cidr_v: 10.244.0.0/16
 
 packages:
 - kubeadm
 - kubectl
+- firewalld
+- yum-utils
+- device-mapper-persistent-data
+- lvm2
+- bind-utils
+- dnsmasq
+- python3
 
 services:
 - docker
 - kubelet
 - firewalld
 
+pip_packages:
+- openshift
+- kubernetes
+
+sysctl:
+- "net.ipv4.ip_forward"
+- "net.bridge.bridge-nf-call-ip6tables"
+- "net.bridge.bridge-nf-call-iptables"
+
 ports:
+- "179/tcp"
+- "2379/tcp"
+- "2380/tcp"
+- "4243/tcp"
 - "6443/tcp"
+- "6783/tcp"
+- "8285/udp"
+- "8472/tcp"
+- "8472/udp"
 - "10250/tcp"
+- "10251/tcp"
+- "10252/tcp"
+- "10255/tcp"
+- "30000-32767/tcp"
 
 token_file: join_token

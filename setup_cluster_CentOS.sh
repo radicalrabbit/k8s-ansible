@@ -6,12 +6,13 @@ echo ""
 echo "#"
 echo "# Preparing Vagrant Boxes (CentOS VMs)..."
 echo "#"
-cd vagrant
+cd vagrant/centos
 sudo vagrant destroy
 sudo ssh-keygen -R 10.11.12.2
 sudo ssh-keygen -R 10.11.12.3
 sudo ssh-keygen -R 10.11.12.4
 sudo vagrant up
+cd ..
 cd ..
 echo "#"
 echo "# Installing Kubernetes Master-Node..."

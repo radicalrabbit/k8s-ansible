@@ -1,8 +1,24 @@
 ---
 - hosts: kubernetes-master-nodes
   become: yes
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   vars_files:
   - env_variables
+
+  pre_tasks:
+  - name: Wait for play hosts to be up again
+    wait_for:
+      host: '{{hostvars[item].ansible_host}}'
+      port: 22
+      state: started
+      delay: 10
+      timeout: 45
+    with_items: '{{play_hosts}}' 
+    connection: local
+  - setup:
+
   tasks:
   - name: Pulling k8s images for cluster setup
     shell: kubeadm config images pull
@@ -24,8 +40,12 @@
      sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
      sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-  - name: Installing Flannel Pod Network
-    command: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  - name: Install Network Add-on
+    #command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+    command: kubectl create -f https://github.com/coreos/flannel/raw/master/Documentation/kube-flannel.yml
+    args:
+       warn: false # set warn=false to prevent warning
+    ignore_errors: true # ignore non-zero exit retVal of dashboard install routine
 
   - name: Get the service account token
     shell: kubectl get secret $(kubectl get serviceaccount dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
@@ -37,14 +57,15 @@
        src: proxy_service
        dest: "/lib/systemd/system/kubectlproxy.service"
 
-  - name: Enable the proxy service demon
-    command: systemctl enable kubectlproxy.service
-
   - name: Reload the systemctl demon
-    command: systemctl daemon-reload
+    systemd:
+      daemon_reload: yes
 
-  - name: Restart the proxy service demon
-    command: systemctl restart kubectlproxy.service
+  - name: Enable the proxy service demon
+    systemd:
+      state: restarted
+      enabled: yes
+      name: kubectlproxy.service
 
   - name: Create a namespace for the development tools
     command: kubectl create namespace dev-tools

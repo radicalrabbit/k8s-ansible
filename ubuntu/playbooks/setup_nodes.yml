@@ -1,49 +1,85 @@
 ---
 - hosts: all
+  gather_facts: false
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   vars_files:
   - env_variables
+
+  pre_tasks:
+  - name: Wait for play hosts to be up again
+    wait_for:
+      host: '{{hostvars[item].ansible_host}}'
+      port: 22
+      state: started
+      delay: 10
+      timeout: 45
+    with_items: '{{play_hosts}}' 
+    connection: local
+  - setup:
+
   tasks:
-  - name: Add the k8s repo signing key
-    command: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add
 
-  - name: Perform an update of the package lists
-    command: sudo apt-get update
+  - name: Creating a repository file for Kubernetes
+    file:
+     path: /etc/yum.repos.d/kubernetes.repo
+     state: touch
 
-  - name: Install curl
-    command: sudo apt-get install curl -y
-  
-  - name: Add the k8s repository
-    command: sudo apt-add-repository "deb http://apt.kubernetes.io/ kubernetes-xenial main"
+  - name: Adding repository details in Kubernetes repo file.
+    blockinfile:
+     path: /etc/yum.repos.d/kubernetes.repo
+     block: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
-  - name: Install the required k8s packages
-    command: sudo apt-get install kubeadm kubelet kubectl -y
+  - name: Installing required packages
+    yum:
+     name: "{{ packages }}"
+     state: present
 
-  - name: Mark the packes as hold
-    command: sudo apt-mark hold kubeadm kubelet kubectl
+  - name: Creating a k8s repository file
+    file:
+     path: /etc/yum.repos.d/kubernetes.repo
+     state: touch
 
-  - name: Install https connection dependencies
-    command: sudo apt install apt-transport-https ca-certificates curl software-properties-common  -y
+  - name: Adding the repo details in k8s repo config file
+    blockinfile:
+     path: /etc/yum.repos.d/kubernetes.repo
+     block: |
+      [kubernetes]
+      name=Kubernetes
+      baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
+      enabled=1
+      gpgcheck=1
+      repo_gpgcheck=1
+      gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg
+        https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
 
-  - name: Add the repo key for the Docker installation
-    command:  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - name: Add docker repo
+    shell: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 
-  - name: Add the Docker repository
-    command: sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" && sudo apt update -y
+  - name: Installing docker package
+    shell: yum install -y docker-ce --nobest
 
-  - name: Select the Docker-CE repo for installation
-    command: apt-cache policy docker-ce
+  - name: Installing required pip packages
+    pip:
+      name: "{{ pip_packages }}"
 
-  - name: Install Docker-CE
-    command: sudo apt-get install docker-ce && sudo systemctl status docker -y
+  - name: Starting and enabling the services
+    service:
+     name: "{{ item }}"
+     state: started
+     enabled: yes
+    with_items: "{{ services }}"
 
-  - name: Add the user to the Docker group
-    command: sudo usermod -aG docker ${USER} && su - ${USER}
-    
-  - name: 
-    command: sudo apt-get install firewalld -y && sudo systemctl enable firewalld -y && sudo systemctl start firewalld -y && sudo ufw disable  
-
-  - name: Allow ports in firewall demon
+  - name: Allow ports in firewall daemon
     firewalld:
      port: "{{ item }}"
      state: enabled
@@ -51,5 +87,49 @@
      immediate: yes
     with_items: "{{ ports }}"
 
+  - name: Add IP address of all known nodes to /etc/hosts
+    lineinfile:
+      dest: /etc/hosts
+      regexp: '.*{{ item }}$'
+      line: "{{ hostvars[item].ansible_host }} {{item}}"
+      state: present
+    when: hostvars[item].ansible_host is defined
+    with_items: "{{ groups.all }}"
+
   - name: Enabling firewall bridge rule
     shell: "echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables"
+
+  - name: Enabling permanent firewall masquerade and public zone
+    firewalld:
+      zone: public
+      state: enabled
+      masquerade: yes
+      permanent: yes
+
+  - name: Allow Network Ports in Firewalld
+    firewalld:
+     port: "{{ item }}"
+     state: enabled
+     permanent: yes
+     immediate: yes
+    with_items: "{{ ports }}"
+
+  - name: Enabling cluster addresses in firewall
+    firewalld:
+      zone: public
+      state: enabled
+      permanent: yes
+      rich_rule: rule family=ipv4 source address="{{ cidr_v }}" accept
+
+  - name: Reload the firewall rules
+    shell: firewall-cmd --reload
+
+  - name: Set sysctl rules
+    sysctl:
+      name: "{{ item }}"
+      value: '1'
+      sysctl_set: yes
+    with_items: "{{ sysctl }}"
+
+  - name: Reload sysctl rules
+    shell: sysctl --system

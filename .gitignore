@@ -1,2 +1,3 @@
 centos/playbooks/join_token
-vagrant/.vagrant
+vagrant/centos/.vagrant
+vagrant/deb/.vagrant
