@@ -1,8 +1,24 @@
 ---
 - hosts: kubernetes-master-nodes
   become: yes
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   vars_files:
   - env_variables
+
+  pre_tasks:
+  - name: Wait for play hosts to be up again
+    wait_for:
+      host: '{{hostvars[item].ansible_host}}'
+      port: 22
+      state: started
+      delay: 10
+      timeout: 45
+    with_items: '{{play_hosts}}' 
+    connection: local
+  - setup:
+
   tasks:
   - name: Pulling k8s images for cluster setup
     shell: kubeadm config images pull

@@ -1,3 +1,5 @@
+sudo yum install -y python3
+
 set -e -u
 
 # disable selinux sed -i 's/^SELINUX=.*/SELINUX=disabled/g' /etc/selinux/config
