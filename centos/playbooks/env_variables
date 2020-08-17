@@ -41,5 +41,6 @@ ports:
 - "10252/tcp"
 - "10255/tcp"
 - "30000-32767/tcp"
+- "50000/tcp"
 
 token_file: join_token

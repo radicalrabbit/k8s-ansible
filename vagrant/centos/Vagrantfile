@@ -5,8 +5,8 @@ VAGRANTFILE_API_VERSION = "2"
 CLUSTER_RANGE = "10.11.12"
 CLUSTER_RANGE_START = 2
 NUMBER_OF_MEMBERS = 3
-OS_DISTRO = "centos"
-OS_VERSION = "8"
+OS_DISTRO = "generic"
+OS_VERSION = "centos8"
 MEMBER_HOSTNAME_PREFIX = "#{OS_DISTRO}#{OS_VERSION}"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -19,7 +19,7 @@ config.vm.provider "libvirt" do |v|
 end
 
   (CLUSTER_RANGE_START..CLUSTER_RANGE_START+NUMBER_OF_MEMBERS-1).each do |i|
-        vm_name = "#{MEMBER_HOSTNAME_PREFIX}#{i}"
+        vm_name = "#{OS_VERSION}#{i}"
         ip_address = "#{CLUSTER_RANGE}.#{i}"
         config.vm.define vm_name do |server|
           server.vm.hostname = vm_name
