@@ -1,0 +1,20 @@
+---
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a Jenkins PVC
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: jenkins-dind-pv-claim
+          namespace: dev-tools
+        spec:
+          storageClassName: manual
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 3Gi

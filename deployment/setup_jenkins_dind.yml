@@ -1,0 +1,4 @@
+- import_playbook: ../tools/jenkins_dind_pv.yml
+- import_playbook: ../tools/jenkins_dind_pvc.yml
+- import_playbook: ../tools/jenkins_dind_deploy.yml
+- import_playbook: ../tools/jenkins_dind_service.yml
