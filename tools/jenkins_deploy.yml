@@ -28,7 +28,7 @@
                 runAsUser: 0
               containers:
                 - name: jenkins
-                  image: jenkins/jenkins:lts
+                  image: bitnami/jenkins
                   resources:
                     requests:
                       memory: "2G"

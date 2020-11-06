@@ -16,10 +16,27 @@
             app: jenkinsdind
           type: NodePort  
           ports:
-            - name: http
-              port: 8080
+            - port: 8080
               targetPort: 8080
-              nodePort: 32767
-            - name: agent
-              port: 50000
-              protocol: TCP
+              nodePort: 30000
+
+
+- hosts: kubernetes-master-nodes
+  become: yes
+  tasks:
+  - name: Create a Jenkins NodePort Service
+    k8s:
+      state: present
+      definition:
+        apiVersion: v1
+        kind: Service
+        metadata:
+          name: jenkinsdind-jnlp
+          namespace: dev-tools
+        spec:
+          type: ClusterIP
+          ports:
+            - port: 50000
+              targetPort: 50000
+          selector:
+            app: jenkinsdind
