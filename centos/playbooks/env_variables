@@ -19,7 +19,7 @@ services:
 
 pip_packages:
 - openshift
-- kubernetes
+- kubernetes==11.0.0
 
 sysctl:
 - "net.ipv4.ip_forward"
